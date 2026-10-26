@@ -1,0 +1,26 @@
+[
+  {
+    "name": "hypercasual-playbook",
+    "inputs": ["synth/hc_ids.txt", "videos/gmtk_notes.md"],
+    "brief": "اعمل مسودة SKILL.md لسكيل اسمه hypercasual-playbook: البلايبوك التشغيلي الكامل لتصميم وإنتاج ألعاب هايبر/هايبرد-كاجوال — من نوتس كورس الـ24 حلقة (Scrape Master) + نوتس GMTK. الأقسام المطلوبة: اختيار الفكرة وفحص السوق، CPI وأول 5 ثواني، الكور لوب والميكانيكات، FTUE والأونبوردنج، الريتنشن والميتا (arcade idle playbook)، المونيتايزيشن، الآرت ستايل ماتريكس، وcheatsheet إنتاج لعبة في يوم.",
+    "out": "synth/out/hypercasual-playbook-SKILL.md"
+  },
+  {
+    "name": "level-design-playbook",
+    "inputs": ["synth/stevelee_ids.txt"],
+    "brief": "اعمل مسودة SKILL.md لسكيل اسمه level-design-stevelee: بلايبوك الليفل ديزاين العملي من نوتس فيديوهات Steve Lee (مصمم Dishonored 2) — التصميم بالنص الأول، الـ orthogonal design، الـ 30 سؤال للمصمم، مشاكل الـ blockouts الثمانية، الـ environmental storytelling، وworkflow التصميم الكامل. مع قسم تطبيق على مولد ليفلات فيزيائي (زي Mossfolk).",
+    "out": "synth/out/level-design-stevelee-SKILL.md"
+  },
+  {
+    "name": "tester-upgrade-spec",
+    "inputs": ["videos/aiandgames_notes.md", "videos/extracredits_notes.md"],
+    "brief": "اعمل Upgrade Spec تنفيذي للتيستر-بوت بتاعنا (app-tester + skill_bot + tester memory): من نوتس AI and Games (Division 2 bots، Halo Infinite humanlike، MLMove 100ms، KI Shadow CBR، L4D director، Tomb Raider clustering، Utility AI، Forza Drivatar) ونوتس Extra Credits. المطلوب: قايمة ترقيات مرقمة بالأولوية، كل ترقية فيها: الفكرة والمصدر، التصميم المقترح عندنا، وطريقة قياس إنها نجحت. ركز على: بروفايلات لاعبين واقعية، قراءة نوايا اللاعب من أفعاله، كشف الإحباط/الكاثارسيس المعكوس، والفحوصات الجديدة للـ audit.",
+    "out": "synth/out/tester-upgrade-spec.md"
+  },
+  {
+    "name": "director-upgrade-digest",
+    "inputs": ["videos/extracredits_notes.md", "videos/gmtk_notes.md"],
+    "brief": "اعمل ملحق ترقية لإيجنت game-director: من نوتس Extra Credits وGMTK الكاملة، استخرج الفريموركس اللي لسه مش في سكيلات الكتب (hook/tutorial/reward NPX، التصنيف الرباعي للمصممين، difficulty vs punishment، scaling كمشرط، de-gamification test، الزوج versatility+consistency، optimal-vs-fun، Ma، diegetic UI الرباعي، curb cut effect، قواعد السكيل تريز، rank systems، الكاثارسيس) — كل فريم وورك: اسمه ومصدره، قواعده بالأرقام، وسطر إدخاله في الـ spec checklist بتاع الدايركتور.",
+    "out": "synth/out/director-upgrade-digest.md"
+  }
+]

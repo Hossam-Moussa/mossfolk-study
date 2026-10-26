@@ -1566,3 +1566,81 @@ ERROR: [youtube] 05DkEH9HUTM: This video is not available
 [info] Writing video subtitles to: ACJkckXi0ns.en.vtt
 [info] Writing video subtitles to: lqt8uTeeiOM.en.vtt
 [info] Writing video subtitles to: vj16ZxU1ZBA.en.vtt
+[info] Writing video subtitles to: evmVKcAtWoM.en.vtt
+[info] Writing video subtitles to: Gi8Xu5ff_E8.en.vtt
+[info] Writing video subtitles to: PE4FMW0J0s8.en.vtt
+[info] Writing video subtitles to: XSTie0VcYeQ.en.vtt
+[info] Writing video subtitles to: dxMUgu4beo4.en.vtt
+[info] Writing video subtitles to: iBy8W7FaOUU.en.vtt
+[info] Writing video subtitles to: oBkIjmeZPK4.en.vtt
+[info] Writing video subtitles to: ObQKkBjYJbU.en.vtt
+[info] Writing video subtitles to: HxWIDFeAr24.en.vtt
+[info] Writing video subtitles to: OmrD6Grkmcc.en.vtt
+[info] Writing video subtitles to: 6pa7Wc8GFa0.en.vtt
+[info] Writing video subtitles to: HARLaWtYdww.en.vtt
+[info] Writing video subtitles to: Ob9gvLltPM8.en.vtt
+[info] Writing video subtitles to: QInk6SiGmao.en.vtt
+[info] Writing video subtitles to: Y01C2n_HWVM.en.vtt
+[info] Writing video subtitles to: 9WBg-KQjsUA.en.vtt
+[info] Writing video subtitles to: _d7qqV0dcOk.en.vtt
+[info] Writing video subtitles to: mIntK2xOd24.en.vtt
+[info] Writing video subtitles to: neHxmFlZ3ww.en.vtt
+[download]    1.00KiB at  784.86KiB/s (00:00:00)[download]    3.00KiB at    1.16MiB/s (00:00:00)[download]    7.00KiB at    1.82MiB/s (00:00:00)[download]   15.00KiB at    1.28MiB/s (00:00:00)[download]   31.00KiB at  429.41KiB/s (00:00:00)[download]   63.00KiB at  554.33KiB/s (00:00:00)[download]  127.00KiB at  732.65KiB/s (00:00:00)[download]  157.17KiB at  835.51KiB/s (00:00:00)[download] 100% of  157.17KiB in 00:00:00 at 212.69KiB/s
+[info] Writing video subtitles to: f2UEvOZroP8.en.vtt
+[info] Writing video subtitles to: BrnjCrvwh2U.en.vtt
+[info] Writing video subtitles to: 28kp1xAN634.en.vtt
+[info] Writing video subtitles to: 8Toxa3Qqjew.en.vtt
+[info] Writing video subtitles to: TR0V5piVzk4.en.vtt
+[info] Writing video subtitles to: 1Q5q6xWjtdo.en.vtt
+[info] Writing video subtitles to: JcLvQgsvalM.en.vtt
+[info] Writing video subtitles to: rxpKI_9kJUY.en.vtt
+[info] Writing video subtitles to: l7_b_uVOkT8.en.vtt
+[info] Writing video subtitles to: x2gwY9ukXN4.en.vtt
+[info] Writing video subtitles to: tabfxZ8ZPPE.en.vtt
+[info] Writing video subtitles to: ZwBzq4sJl6c.en.vtt
+[info] Writing video subtitles to: -Jk7c0Fk_9k.en.vtt
+[info] Writing video subtitles to: WRE-ySO6jCc.en.vtt
+[info] Writing video subtitles to: 5P8m1IjxKsU.en.vtt
+[info] Writing video subtitles to: t3qFZCF3irg.en.vtt
+[info] Writing video subtitles to: t0bINig-9ew.en.vtt
+[info] Writing video subtitles to: ROBdr_SA3cE.en.vtt
+[info] Writing video subtitles to: GyWsNFLKw40.en.vtt
+[info] Writing video subtitles to: JLgcKYSredg.en.vtt
+[info] Writing video subtitles to: ACJkckXi0ns.en.vtt
+[info] Writing video subtitles to: IK67t1KaBoY.en.vtt
+[info] Writing video subtitles to: 6LB6bWlHy7U.en.vtt
+[info] Writing video subtitles to: MOg1ZFZKdNo.en.vtt
+[info] Writing video subtitles to: tabfxZ8ZPPE.en.vtt
+[info] Writing video subtitles to: ZwBzq4sJl6c.en.vtt
+[info] Writing video subtitles to: -Jk7c0Fk_9k.en.vtt
+[info] Writing video subtitles to: gIM1XKY5XP0.en.vtt
+[info] Writing video subtitles to: K7G8aScWVr8.en.vtt
+[info] Writing video subtitles to: Kq4t8C28vpQ.en.vtt
+[info] Writing video subtitles to: h8Ryg-KOHjs.en.vtt
+[info] Writing video subtitles to: qkbletcaHx8.en.vtt
+[info] Writing video subtitles to: l7_b_uVOkT8.en.vtt
+[info] Writing video subtitles to: 6wKWwfAebI8.en.vtt
+[info] Writing video subtitles to: PMj8Q4ViKzs.en.vtt
+[info] Writing video subtitles to: 3H8pQyyXxHg.en.vtt
+[info] Writing video subtitles to: BVqjLDwAnO0.en.vtt
+[info] Writing video subtitles to: aPiNG_Bbdk4.en.vtt
+[info] Writing video subtitles to: BKaO0HQOgRw.en.vtt
+[info] Writing video subtitles to: x3Oj7Vb1qQU.en.vtt
+[download]    1.00KiB at  956.95KiB/s (00:00:00)[download]    3.00KiB at    1.47MiB/s (00:00:00)[download]    7.00KiB at    2.44MiB/s (00:00:00)[download]   15.00KiB at    1.18MiB/s (00:00:00)[download]   31.00KiB at  429.55KiB/s (00:00:00)[download]   63.00KiB at  553.02KiB/s (00:00:00)[download]   74.71KiB at  586.37KiB/s (00:00:00)[download] 100% of   74.71KiB in 00:00:00 at 184.84KiB/s
+[info] Writing video subtitles to: MIMMJ4xHYR8.en.vtt
+[info] Writing video subtitles to: xXLuG2onbos.en.vtt
+[info] Writing video subtitles to: l7_b_uVOkT8.en.vtt
+[info] Writing video subtitles to: t0bINig-9ew.en.vtt
+[info] Writing video subtitles to: 1Q5q6xWjtdo.en.vtt
+[info] Writing video subtitles to: PMj8Q4ViKzs.en.vtt
+[info] Writing video subtitles to: 6wKWwfAebI8.en.vtt
+[info] Writing video subtitles to: 5P8m1IjxKsU.en.vtt
+[info] Writing video subtitles to: 9WBg-KQjsUA.en.vtt
+[info] Writing video subtitles to: GyWsNFLKw40.en.vtt
+[info] Writing video subtitles to: K7G8aScWVr8.en.vtt
+[info] Writing video subtitles to: aPiNG_Bbdk4.en.vtt
+[info] Writing video subtitles to: ACJkckXi0ns.en.vtt
+[info] Writing video subtitles to: 6LB6bWlHy7U.en.vtt
+[info] Writing video subtitles to: 3H8pQyyXxHg.en.vtt
+[info] Writing video subtitles to: BVqjLDwAnO0.en.vtt
+QUEUE2 COMPLETE Mon Oct 26 20:31:47 EDT 2026
