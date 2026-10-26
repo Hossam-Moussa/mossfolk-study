@@ -25,7 +25,7 @@ EXEMPLAR_FILES = [
     BASE / "videos" / "aiandgames_notes.md",
 ]
 
-MODEL = "claude-opus-5-5"
+MODEL = "claude-sonnet-5-5"  # Hossam 2026-10-26: lighten API cost — Sonnet is half Opus price
 
 RULES = """أنت باحث مذاكرة في استوديو ألعاب حسام. لعبتنا: Mossfolk — Unity physics merge puzzle (إسقاط مخلوقات في برطمان، اتنين من نفس الحجم بيندمجوا للأكبر، 9 أحجام، 3000 ليفل بأهداف وميزانية إسقاطات، تحديات mossy shells/stones/rot من 2501، تيستر-بوت بيقيس bot_difficulty، وside quests فيها rival contests وminiجيمز). الاستوديو هايبر/هايبرد-كاجوال موبايل.
 
