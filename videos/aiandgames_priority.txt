@@ -1,0 +1,26 @@
+# AI and Games — tools shortlist for Mossfolk (2026-10-26)
+# Tier 1 (tester/bots/testing):
+JpQd1Y7gYug | Secret AI Testers Inside The Division 2
+Bu4YV4be6IE | How Rare Tests Sea of Thieves (#43)
+4bOsJSRk0i8 | Halo Infinite humanlike bots (#71)
+Etj5ykJugwU | Killer Instinct Shadow AI (#18)
+A89ZDjF51Nk | ML player behaviour Tomb Raider (#31)
+CPVh8HF1vnQ | Player Performance Modelling BF3 (#11)
+sOgfvb8y9j8 | MLMove LLM plays Counter-Strike (#81)
+LpXl0EPU8uY | COTA GameBot low-latency bots
+3WvHdKY1ZB0 | Snowcap GPU profiling ML (#83)
+keCc1QB7Fvk | Training AI to solve puzzles (Little Learning Machines)
+# Tier 2 (difficulty/balancing):
+Mnt5zxb8W0Y | Director AI for balancing (AI 101)
+WbHMxo11HcU | Director AI of Left 4 Dead (#07)
+JeYP9eyIl4E | Forza Drivatar (#60)
+p3Jbp2cZg3Q | Utility AI (AI 101)
+6VBCXvfNlCM | Behaviour Trees (AI 101)
+fkEG55gFqrA | Into the Breach AI simplicity (#72)
+# Tier 3 (level generation/metrics):
+U-CDQtIJ8eg | Mario levels with ML (#39)
+t_zXpKlccRE | Researching SMB level design (#10)
+LRp9vLk7amg | Cyclic dungeon generation (#57)
+KCBX1pM5fAM | Blood Typers level generation
+QbxO2ZyynSg | PCG Minecraft settlements
+j3LW5no-5Ao | How AI is actually used in industry (AI 101)

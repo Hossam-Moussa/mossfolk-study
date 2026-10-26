@@ -1,0 +1,5 @@
+books/*.txt
+transcripts/*.vtt
+*.log
+_key.txt
+extract_batch3.py

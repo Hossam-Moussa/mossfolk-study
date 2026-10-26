@@ -1,0 +1,12 @@
+{
+  "added": "2026-09-28",
+  "cat": "تصميم وتلاتي الأبعاد",
+  "desc": "Official Blender Lab MCP add-on v1.0.3 on port 9876. Runs Python inside Blender 5.2, reads the scene, renders, takes screenshots, searches the bundled manual and API docs.",
+  "invoke": "mcp__remote-devices__Blender__*",
+  "name": "Blender MCP",
+  "prio": "عالية",
+  "source": "إضافة بليندر على الجهاز",
+  "status": "متاح",
+  "type": "كوننكتور",
+  "use": "أي شغل جوه بليندر: بناء مشاهد وموديلز بالكود، رندر ومعاينة، ودور في دليل بليندر الرسمي لنسخته"
+}

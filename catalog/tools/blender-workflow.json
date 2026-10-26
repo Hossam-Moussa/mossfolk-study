@@ -1,0 +1,12 @@
+{
+  "added": "2026-09-28",
+  "cat": "تصميم وتلاتي الأبعاد",
+  "desc": "How Claude works in Blender on Hossam's machine: setup, crash-safe rules, BlenderKit, preview method, doc lookup, and the plain-language editing guide for Hossam.",
+  "invoke": "blender-workflow",
+  "name": "blender-workflow",
+  "prio": "عالية",
+  "source": "سكيلز حسام",
+  "status": "مقترح، مستني موافقة حسام",
+  "type": "سكيل",
+  "use": "أي طلب في بليندر: موديل، خامة، مشهد، رندر، أو شرح لحسام"
+}

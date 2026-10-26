@@ -1,0 +1,12 @@
+{
+  "added": "2026-09-25",
+  "cat": "أدوات النظام",
+  "desc": "Connect any GitHub tool to Claude: read the repo, classify it, execute what can be executed, and hand Hossam the exact steps.",
+  "invoke": "anthropic-skills:github-tools",
+  "name": "github-tools",
+  "prio": "عالية",
+  "source": "سكيلز حسام",
+  "status": "متاح",
+  "type": "سكيل",
+  "use": "أي لينك جيت هاب: بيقرا الريبو، بيحدد نوعه، بينفّذ اللي ينفّذ، وبيديك خطواتك بالظبط"
+}

@@ -1,0 +1,12 @@
+{
+  "added": "2026-09-28",
+  "cat": "تصميم وتلاتي الأبعاد",
+  "desc": "BlenderKit add-on inside Blender. Free assets download without login. Max texture resolution set to 1024 because the laptop GPU is integrated.",
+  "invoke": "bpy.ops.scene.blenderkit_download(asset_base_id=...)",
+  "name": "BlenderKit",
+  "prio": "متوسطة",
+  "source": "إضافة بليندر على الجهاز",
+  "status": "متاح",
+  "type": "إضافة",
+  "use": "خامات وموديلز مجانية للمشاهد: رمل وعشب وصخر وخشب وشجر وغيرهم"
+}

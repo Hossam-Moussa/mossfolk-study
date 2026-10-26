@@ -1,0 +1,12 @@
+{
+  "added": "2026-10-15",
+  "cat": "فيديو وصور",
+  "desc": "Design request queue between Claude and ChatGPT. Claude appends a row to the Greco Design Requests Google Sheet; an Apps Script time trigger (every 5 min) emails each new row with the [GRECO-DESIGN] subject tag; a ChatGPT Work event-triggered task (Gmail trigger) makes the design and delivers it to a Drive folder, or by a new GRECO-DONE email, or flags MANUAL SAVE NEEDED; the script collects the files and marks the row done. Code and task prompt in D:\\Resume\\work\\tools\\design-queue. Mock-tested 16/16 on 15 Oct 2026; not yet run live.",
+  "invoke": "design-queue",
+  "name": "design-queue",
+  "prio": "عالية",
+  "source": "سكيلز حسام، وشيت جوجل، وتاسك في شات جي بي تي",
+  "status": "مقترح، مستني موافقة حسام وإعداد الشيت",
+  "type": "سكيل",
+  "use": "طلب تصميم بوست أو صورة إعلان من شات جي بي تي من غير ما الشغل يقف: كلود يكتب الطلب في الشيت، والنتيجة ترجع على درايف"
+}

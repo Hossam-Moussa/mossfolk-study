@@ -1,0 +1,12 @@
+{
+  "added": "2026-10-10",
+  "cat": "بحث ومصادر",
+  "desc": "Source Library MCP connector in Claude: searchable library of historical book scans with AI English translations; returns verbatim quotes with citation links. The claude.ai connector runs keyless (500 pages/day, 60 requests/hour per the developers page). A Claude Desktop extension that sends Hossam's free key (2,000 pages/day, 60/minute) was built 10 Oct 2026: D:\\Resume\\work\\tools\\source-library-key\\source-library-key.mcpb, source in src. Tested without a key: 15 tools relayed. Hossam installs it and pastes the key himself.",
+  "invoke": "mcp__Source_Library__*",
+  "name": "Source Library",
+  "prio": "متوسطة",
+  "source": "كوننكتور في كلود",
+  "status": "متاح",
+  "type": "كوننكتور",
+  "use": "مراجع تاريخية واقتباسات بمصادرها، زي كتب بناء السفن القديمة كمرجع لسفن جيم ١"
+}

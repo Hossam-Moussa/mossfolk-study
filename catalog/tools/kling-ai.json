@@ -1,0 +1,12 @@
+{
+  "added": "2026-10-10",
+  "cat": "فيديو وصور",
+  "desc": "Kling AI Windows app plus the official Kling MCP connector in Claude (v1.3.3). Account is on the free NORMAL plan with 0 credits on 10 Oct 2026. Free plan: 720p only, watermark, no commercial use without written permission, outputs may be used for Kling training unless revoked by email. Native audio has no Arabic.",
+  "invoke": "mcp__kling__*",
+  "name": "Kling AI",
+  "prio": "متوسطة",
+  "source": "أبلكيشن على الجهاز وكوننكتور في كلود",
+  "status": "متاح، والمجاني مش تجاري",
+  "type": "كوننكتور",
+  "use": "تجارب فيديو وستوري بورد داخلي ومسودات حركة. أي حاجة لعميل أو للعبة محتاجة اشتراك. كل توليدة بتتخصم من الكريديت، فبتستأذن حسام قبلها"
+}
