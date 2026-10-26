@@ -68,9 +68,13 @@
 
 ---
 
-**لموسفولك:**
-- **Unity مش UE**، بس المبدأ واحد: **الـ creatures في الـ jar** بتتقسم لـ 9 تعريفات أحجام مشتركة (ScriptableObject فيها sprite/mesh/material/physics material)، وكل creature instance بيشيل بس position وvelocity وindex الحجم. ده بيوفر ميموري كبيرة على موبايل، وده بالظبط الـ intrinsic/extrinsic.
-- **الديكور اللي بيتكرر** (mossy shells، stones، rot tiles على خلفية الـ jar) مرشح قوي لـ **GPU instancing** (Unity's equivalent للـ ISM). ده بيقلل الـ draw calls وده مهم جدًا في hyper-casual.
-- **الـ particles** (تأثيرات الـ merge وانفجار الـ moss) = نفس مثال Refactoring Guru بالظبط: شيل التعريف المشترك في شيء واحد وخلي كل particle يشيل بس موقعه وسرعته.
-- **حذار:** لو كل creature عنده material أو tint مختلف، الـ sharing بيتكسر. فقرر من البداية: هل التنوع البصري بييجي من **tint بيتعدّل per-instance** (property block) ولا من **material منفصل**؟
-- **للـ tester bot:** لو بتشغّل آلاف simulations بالتوازي، الـ level definitions والـ creature types لازم تبقى shared read-only، والـ runs بتشيل بس الـ state بتاعها. ده بيخلي الـ bot_difficulty runs أخف بكتير.
+**للاستوديو:**
+- **الفكرة:** Flyweight معناه إنك تفصل الحالة المشتركة (intrinsic) عن الحالة الفريدة (extrinsic)، وتخزن المشتركة مرة واحدة وتشاركها بين آلاف الـ instances. في Unreal ده بيتحقق بـ UDataAsset/UPrimaryDataAsset كـ definition read-only، والـ Actor أو الـ Component يشيل بس الـ transform وأي state خاص بيه. ينفع يتطبق على أي لعبة فيها كيانات كتير متشابهة: أعداء، مقذوفات، tiles، VFX، عناصر UI.
+- **اختيار الفكرة:** قبل ما تبدأ أي كونسبت جديد، اسأل: هل الكونسبت فيه كيانات كتير (مئات أو آلاف) بنفس الشكل؟ لو أيوه، الـ architecture دي لازم تتحط من أول الـ prototype مش بعد ما الفكرة تتقبل. ده بيخلي الـ prototype أخف، وبيتعاد استخدامه بين الألعاب.
+- **الـ Data Assets:** كل نوع كيان يبقى DataAsset واحد فيه mesh وmaterial وphysics material وstats. الـ instances تعمل reference ليه بـ TObjectPtr أو TSoftObjectPtr ومتكررش الداتا جواها. (مثال على اللعبة الحالية Mossfolk: الـ creatures في الـ jar تتقسم لـ 9 أحجام مشتركة، وكل creature instance يشيل بس position وvelocity وindex الحجم، وده بيوفر ميموري كبيرة على موبايل.)
+- **Instancing للديكور:** أي ديكور متكرر مرشح قوي لـ Instanced Static Mesh أو HISM بدل Actors منفصلة، وده بيقلل الـ draw calls وده مهم جدًا في hyper-casual على الموبايل. (مثال على اللعبة الحالية Mossfolk: mossy shells وstones وrot tiles على خلفية الـ jar.)
+- **الـ VFX:** الـ particles تبقى Niagara system واحد مشترك، والـ spawn بيمرر بس الـ parameters الفريدة زي الموقع والسرعة. (مثال على اللعبة الحالية Mossfolk: تأثيرات الـ merge وانفجار الـ moss، نفس مثال Refactoring Guru بالظبط.)
+- **حذار من كسر الـ sharing:** لو كل instance عنده material أو tint مختلف، الـ sharing بيتكسر. قرر من البداية: التنوع البصري هيجي من per-instance data (Custom Primitive Data أو Material Parameter Collection)، ولا من Material Instance Dynamic منفصل لكل واحد؟ الـ MID لكل instance بيكلف draw calls وميموري، فالأفضل الـ Custom Primitive Data غالبًا. (مثال على اللعبة الحالية Mossfolk: لون كل creature أو لمسة الـ moss.)
+- **الـ hot path:** الـ spawn والـ update لآلاف الكيانات يتكتبوا في C++، والـ Blueprints تتحط بس للـ setup والتصميم، لأن الـ Blueprint overhead بيبان بسرعة مع الأعداد الكبيرة.
+- **الـ tester bot:** لو بتشغّل آلاف simulations بالتوازي (headless build)، الـ level definitions والـ creature types لازم تبقى shared read-only، والـ runs تشيل بس الـ state بتاعها. ده بيخلي الـ bot_difficulty runs أخف بكتير ومايحتاجش يحمّل الداتا تاني في كل run. (مثال على اللعبة الحالية Mossfolk: الـ jar configs وتعريفات الـ creatures.)
+- **الإعلانات والـ creatives:** نفس المبدأ ينفع في خط الإنتاج: template واحد مشترك لكل فورمات الإعلان، وكل variant يشيل بس الـ parameters الفريدة زي النص أو اللون أو الـ hook. ده بيسرّع إنتاج الـ A/B tests من غير ما كل نسخة تبقى مشروع لوحدها.
