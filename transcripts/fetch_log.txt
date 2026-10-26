@@ -1470,3 +1470,11 @@ ERROR: [youtube] 05DkEH9HUTM: This video is not available
 [info] Writing video subtitles to: VnOVLBbYlU0.en.vtt
 [info] Writing video subtitles to: HjhsY2Zuo-c.en.vtt
 [info] Writing video subtitles to: F73nMLkcDQE.en.vtt
+[info] Writing video subtitles to: DL4tiI53IW4.en.vtt
+[info] Writing video subtitles to: dHIrZBTkajc.en.vtt
+[download]    1.00KiB at  683.33KiB/s (00:00:00)[download]    3.00KiB at    1.38MiB/s (00:00:00)[download]    7.00KiB at    2.38MiB/s (00:00:00)[download]   15.00KiB at    1.24MiB/s (00:00:00)[download]   31.00KiB at  429.96KiB/s (00:00:00)[download]   63.00KiB at  557.10KiB/s (00:00:00)[download]  127.00KiB at  743.11KiB/s (00:00:00)[download]  253.93KiB at    1.09MiB/s (00:00:00)[download] 100% of  253.93KiB in 00:00:00 at 495.28KiB/s
+[info] Writing video subtitles to: RakSW9pbpkw.en.vtt
+[info] Writing video subtitles to: g8zXctCVe0M.en.vtt
+[info] Writing video subtitles to: L3bR9y-Yijo.en.vtt
+[info] Writing video subtitles to: gmqi6Vqh43I.en.vtt
+[info] Writing video subtitles to: vbN4sk87wlo.en.vtt
