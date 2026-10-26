@@ -230,24 +230,24 @@
 
 ---
 
-## **لموسفولك:**
+**للاستوديو:**
 
-1. **تعريف الـ buckets:** نعمل doc بالـ systems الأساسية للـ Mossfolk كـ buckets منظمة: الـ merge core (الـ drop/merge والـ physics والـ jar)، الـ level goals وdrop budget، الـ challenges (mossy shells / stones / rot، من ليفل 2501)، الـ side quests (rival contests + mini-games)، الـ bot tester، الـ UI/UX والـ controls، والـ progression/economy. كل bucket ليه sub-systems وflags بالألوان.
+1. **تعريف الـ buckets:** لأي لعبة جديدة نعمل doc بالـ systems الأساسية كـ buckets منظمة: الـ core loop، الـ level goals والـ budget، الـ mechanics المميزة (challenges)، الـ side modes، الـ bot tester، الـ UI/UX والـ controls، والـ progression/economy. كل bucket ليه sub-systems وflags بالألوان. (مثال على اللعبة الحالية Mossfolk: الـ merge core = الـ drop/merge والـ physics والـ jar، والـ challenges = mossy shells / stones / rot من ليفل 2501، والـ side quests = rival contests + mini-games.)
 
-2. **الـ Limiter الأساسي عندنا: drop budget.** ده ممكن يتعرف كـ limiter صريح، ويتفكر فيه كـ أداة تحكم: عدد الإسقاطات المتاحة بيحدد الـ puzzle ويعمل تحدي (زي sniper ammo بالظبط). وأي تغيير في الـ budget بيأثر على كل الليفلات، فيتعامل معاه كـ system مش رقم عشوائي.
+2. **الـ Limiter الأساسي لأي فكرة: الـ budget.** حدد الـ limiter بشكل صريح من الأول، وفكر فيه كأداة تحكم: عدد الحركات أو الإسقاطات المتاحة هو اللي بيحدد الـ puzzle ويعمل التحدي، زي الـ sniper ammo بالظبط. وأي تغيير في الـ budget بيأثر على كل الليفلات، فلازم يتعامل معاه كـ system مش كرقم عشوائي. (مثال على Mossfolk: الـ drop budget.)
 
-3. **الـ Pillars وقاعدة 70/30:** الـ 70% معروفة (merge puzzle = نمط مجرب في الـ genre)، والـ 20-30% اللي تميزنا لازم تكون محددة وقليلة: **mossy shells/stones/rot** (التحديات الفريدة) و**المخلوقات بأحجامها التسعة**. لو اتضاف لعب تاني كتير، ده خطر "الـ genre crossing" اللي المتحدث حذّر منه.
+3. **الـ Pillars وقاعدة 70/30:** الـ 70% معروفة في الـ genre، والـ 20-30% اللي بتميزنا لازم تكون محددة وقليلة. في أي لعبة، الـ pillars دي هي اللي بتتعرض في الـ marketing والـ store page. (مثال على Mossfolk: الـ mossy shells / stones / rot، والمخلوقات بأحجامها التسعة.) لو اتضاف لعب تاني كتير، ده خطر "الـ genre crossing" اللي المتحدث حذّر منه.
 
-4. **تحذير الـ genre crossing:** الـ side quests فيها **rival contests و mini-games**. ده خطر إننا نعمل "merge puzzle + rival PvP + mini games" وكل واحد جمهوره صغير، والتقاطع يبقى ضعيف. الـ mini-games والـ rival contests لازم تتفحص بالسؤال: هل بتخدم الـ pillar ولا بتشتت الجمهور؟
+4. **تحذير الـ genre crossing:** أي side mode أو mini-game أو PvP ممكن يتحول لخطر إننا نعمل "genre A + genre B + genre C" وكل واحد جمهوره صغير، فالتقاطع يبقى ضعيف. أي عنصر من دول لازم يتفحص بسؤال واحد: هل بيخدم الـ pillar ولا بيشتت الجمهور؟
 
-5. **قرار Day One (درس Ratchet Deadlock):** الـ rival contests هل هي **asynchronous** (بتتقارن بنتايج) ولا **real-time multiplayer**؟ ده قرار هيأثر على كل system: الـ pause، الـ physics determinism، الـ bot، والـ UI. لازم يتحسم بدري عشان ميعملش rework زي Ratchet. وكمان الـ bot tester (bot_difficulty) لازم يتصمم مع إن الـ physics بتتحسب بنفس الطريقة، عشان المقارنات تبقى صح.
+5. **قرار Day One (درس Ratchet Deadlock):** لو فيه أي تفاعل multiplayer، لازم نحسم بدري هل هو **asynchronous** (مقارنة بنتايج) ولا **real-time**. القرار ده بيأثر على كل system: الـ pause، الـ physics determinism، الـ bot، والـ UI، فلو اتأجل هيعمل rework زي Ratchet. وكمان الـ bot tester لازم يتصمم من الأول مع إن الـ physics بتتحسب بنفس الطريقة، عشان المقارنات تبقى صح. (مثال على Mossfolk: هل الـ rival contests asynchronous ولا real-time؟ وهل الـ bot_difficulty بيتحسب على نفس الـ physics؟)
 
-6. **فحص الـ mini-games بقاعدة الـ outline:** كل mini-game يتكتب كسطر في الـ outline الأول، ويتعرض على الفريق (art/programming) بدري: "هل ده كتير؟ هل ده صعب؟" عشان ما نضيعش شهر على mini-game زي الغواصة.
+6. **فحص الـ mini-games بقاعدة الـ outline:** كل mini-game يتكتب كسطر في الـ outline الأول، ويتعرض على الفريق (art / programming) بدري بالسؤالين: "هل ده كتير؟ هل ده صعب؟" عشان ما نضيعش شهر على فكرة زي الغواصة.
 
-7. **الـ Flags للتتبع:** الـ mossy/rot challenges كـ blue pillars، الـ rival contests كـ purple (risk: multiplayer ومش عندنا خبرة شبكات)، الـ mini-games اللي مش متأكدين منها كـ ? أو برتقالي.
+7. **الـ Flags للتتبع:** كل bucket يتعلم بلون. الـ mechanics المميزة (الـ pillars) بلون أزرق، والـ features اللي فيها risk تقني عالي (زي multiplayer ومفيش خبرة فيه) بلون بنفسجي، والـ features اللي مش متأكدين منها بعلامة ? أو برتقالي. (مثال على Mossfolk: الـ mossy/rot challenges أزرق، والـ rival contests بنفسجي عشان مفيش خبرة شبكات.)
 
-8. **مرجع how-to دائم للـ challenges:** (مرتبط بالبث بتاع التيوتوريال بس بمنطق مختلف هنا): كل challenge جديد لازم يتعلم بشكل واضح، والـ mossy/rot ممكن يحتاج limiter زي الـ drop budget عشان يبقى تحدي مش عشوائية.
+8. **مرجع how-to دائم للـ challenges:** كل challenge أو mechanic جديد لازم يتعلم للاعب بشكل واضح قبل ما يتحط في تحدي. ولو الـ mechanic ده عشوائي بطبيعته، محتاج limiter زي الـ budget عشان يبقى تحدي مش حظ.
 
-9. **الـ Death والـ failure state:** إيه اللي بيحصل لو اللاعب فشل في ليفل؟ (خسارة الـ drops، إعادة المحاولة، الـ hearts، إلخ). ده system مستقل ولازم يتسجل في الـ outline بدري.
+9. **الـ Death والـ failure state:** إيه اللي بيحصل لو اللاعب فشل في ليفل؟ (خسارة الموارد، إعادة المحاولة، الـ hearts، إلخ.) ده system مستقل ولازم يتسجل في الـ outline بدري، مش يتحل وقت الـ QA. (مثال على Mossfolk: خسارة الـ drops ومستوى الـ hearts.)
 
-10. **الـ Stealth/Interaction links:** لو فيه أي تفاعل بين الـ challenges والـ merge core (مثلاً mossy shell بيتشال بالدمج)، اعمل link بين الـ buckets عشان ماتتنساش وقت التصميم.
+10. **الـ Stealth/Interaction links:** لو فيه أي تفاعل بين الـ challenges والـ core loop (مثلاً mechanic بيتشال بالدمج)، اعمل link صريح بين الـ buckets في الـ doc عشان ما يتنساش وقت التصميم. (مثال على Mossfolk: الـ mossy shell بيتشال بالدمج.)
