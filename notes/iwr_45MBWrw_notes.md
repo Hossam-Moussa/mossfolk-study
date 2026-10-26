@@ -1,299 +1,383 @@
-# Game Pipeline Walkthrough: محاضرة عن pipeline مستند إنتاج لاستوديو Globex (الصين) — نوتس مذاكرة
+# Game Development Pipeline — Globex Studios MMORPG Flowchart (بث لايف مينتور، iwr_45MBWrw، ~115 دقيقة) — نوتس مذاكرة
 
-**المصدر:** محاضرة بث مباشر (iwr_45MBWrw)، المدة حوالي 115 دقيقة. العنوان الرسمي مش مذكور في الترانسكريبت، والمحاضر بيشتغل على flow chart بيقارب 30 صفحة اتعمل قبل حوالي 10 سنين لاستوديو اسمه Globex في الصين.
-
-**الملاحظة الأهم من أول المحاضرة:** الـ pipeline ده ليه سياق معين. المحاضر بيقول بنفسه إن المستوى ده من التفصيل «مش طبيعي» ومش هتلاقيه في معظم الشركات. السبب إن فريقه كان حوالي 250 واحد في الصين بيعملوا MMORPG ضخمة، والغالبية منهم junior، وفيه حواجز لغة، وكان فيه 8 مترجمين in-house بدوام كامل. فالمستند اتعمل عشان يعوض الغموض والحواجز.
-
----
-
-## 1. ليه الـ pipeline المكتوب أهم من الموهبة (المقدمة + الـ checklist)
-
-- ★★★ **الفكرة الأم: الـ pipeline = checklist مكتوب، مش خريطة للإلهام بس.** الهدف إن الـ junior وأي حد مش متأكد يمشي خطوة بخطوة: «كيف تعمل كل asset؟ كيف تعمل character؟ كيف تعمل level؟ إزاي تدمج الحاجات ببعض؟ مين مسؤول عن كل خطوة ومين بيقرر؟»
-- **الأخطاء الغبية هي اللي بتكسر الإنتاج** (مش الأخطاء المعقدة): naming conventions (إزاي تسمي الـ asset)، الـ directory الصح، هل الـ asset اتعمل له check-in في source control، إنك تبلغ الشخص اللي بعدك إن الشغل جاهز ليه. المحاضر بيقول «مش متخيل كام واحد مش عارف يعمل الحاجات دي».
-- **الباترن ورا الأخطاء دي:** الواحد بيخلص شغله ويحفظ ويروح للتاسك اللي بعده، وينسى إنه يرجع الـ asset للعبة ويبلغ صاحب الخطوة اللي بعده. النتيجة: حد تاني بيضيع ساعات يدور على الـ asset.
-- **فكرة الـ checklist بتتطبق على أي حد، حتى الـ producer:** الـ checklist بيقولك إنت فين في الـ pipeline، إيه المطلوب منك، وإمتى، وإيه الـ dependencies.
-- **ملاحظة قابلة للتطبيق:** لو الشغل مع outsource أو فريق بعيد، الـ pipeline المكتوب بيبقى ضروري. المحاضر بيقول إن الشركة الخارجية مش عارفة الـ engine بتاعك ومش موجودة معاك، فكل ما تكون أدق في الوصف كل ما تطلع نتايج أحسن.
+ملحوظات على المصدر:
+- اسم المتكلم مش مذكور في الترانسكريبت.
+- الفيديو مش برمجة. ده walkthrough لـ flowchart إنتاج من ~30 صفحة اتعمل لـ MMORPG، فكله تصميم/عملية/إنتاج وكله متسجل.
+- في كلمات ASR متلخبطة: «train» = terrain، «tent» = tint، «Credit player» = CAP (create-a-player).
+- المتكلم قال فريقه «حوالي 250» وبعدين «200 plus». الرقم مش ثابت في كلامه.
+- أرقام ساعات الشغل والتقديرات في المثال **خاصة بلعبته** وهو نفسه قال ماتعتمدهاش.
 
 ---
 
-## 2. الـ Estimation والـ Resource Spreadsheet
+## 1. إيه هو الـ Pipeline ولماذا اتعمل (0m–11m) ★★★
 
-- كل خطوة في الـ flow chart ليها **spreadsheet مرتبط** بيوضح: مين المشارك (مثلاً artist واحد، أو artist وart director)، الوقت التقريبي (ساعات)، والأدوات المستخدمة.
-- ★★ **الـ producers بيستخدموا الأرقام دي للـ scheduling، وفي بداية كل مشروع بيتحققوا منها:** «هل ده فعلاً هياخد 38 ساعة؟ وإحنا قربنا من التقدير ولا لأ؟» والأرقام بتتعدل مع الوقت عشان الجدولة تبقى أدق.
-- **تحذير من المحاضر:** الأرقام دي خاصة بمشروعه ومش هتشتغل عند غيره. اللي يفيد هو **المنهج** مش الرقم.
-- الـ pre-production هي المرحلة اللي فيها بتحاول تعمل «guesstimate» لأقصى حاجة تقدر تعملها، وتحدد فين تحفظ وقت وموارد.
-
----
-
-## 3. قراءة الـ Flow Chart (الـ legend)
-
-- **الأشكال:** فيه عناوين، خطوات، وخطوات فرعية. الأشكال المعينة (ما يعني decision) مخصصة للـ **approvals** أو الحاجات اللي لازم تتتحقق منها. لو فشلت بترجع لخطوة قبلها، وبتفضل في loop لحد ما تتعتمد.
-- **الخطوط المتقطعة = optional.**
-- **الترقيم والحروف** مجرد reference للربط مع الـ spreadsheet، مش مهمة في حد ذاتها.
-- ★ **الـ cross-links:** المستند كان فيه حاجات بتيجي من pipeline تاني وبتروح لـ pipeline تاني، لأن الشغل كان موزع على صفحات مختلفة. ده بيعني إن كل pipeline فرعي له دخول وخروج واضحين.
-- **المستند كان تفاعلي:** كل مربع كان ممكن يبقى زرار يوديك للصفحة التفصيلية. ده بيسهل التنقل بين مستويات التفصيل.
-
----
-
-## 4. الـ Game Universe (المرحلة الأولى: الكون)
-
-- **الترتيب المنطقي:** ابدأ بالكون قبل أي حاجة. الـ IP والـ world building هو الأساس.
-- **Zone = level أو area أو جزء من عالم.** في الـ MMORPG الـ zones مش بالضرورة levels، والمصطلحات دي بتختلف حسب نوع اللعبة (open world أو MMO أو لعبة صغيرة). **المحاضر بيحذر تستخدم المصطلح الصح لمشروعك.**
-- **خطوات المرحلة:**
-  1. **Creating a text summary:** المصمم بيكتب كل حاجة نصياً: مين عايش هنا، مين موجود في الـ level، الأعداء، الـ NPCs، والـ flow charts اللي بتوصف الكون (هل فيه regions؟ هل فيه map؟ إزاي اللاعب هيتقدم؟).
-  2. **High-level story overview لكل الـ zones:** الـ 10,000 foot view. المصمم بيشتغل على القصة الكبيرة.
-  3. **Visual inspirational concepts:** الـ concept art.
-  4. **Approval** قبل ما ينتقل للخطوة اللي بعدها.
-- ★★ **تحديد الـ standards بدري جداً:** لأن كل الـ assets كانت المفروض تتعاد استخدامها بكثافة. فكانوا بيحددوا من الأول: كم character؟ كم body type؟ كم skeletal type؟ هل الـ characters modular؟ هل الـ vehicles والـ enemies modular؟
-- **الباترن ورا ده:** التحديد المبكر بيحدد «قد إيه مسموح نعمل جديد أو أصيل»، وبيخلي الشغل مقيد بشكل صحي. المحاضر بيقول بالحرف إن **حتى 200 واحد مكانوا مش كفاية** عشان يعملوا كل حاجة يبغوها في يوم واحد لعبة بحجم World of Warcraft.
-- **قيود اللعبة الخاصة:** لعبة time travel، بتنقل بين universes، فيها science fiction وfantasy وmodern day مع بعض. فكان لازم يحدد **categories** واضحة: أنواع المباني (modern/fantasy/sci-fi)، أنواع البيئات (desert، forest، fantasy world)، الـ props، الـ enemies، الـ creatures، والـ textures والـ animations والـ LODs والـ AI. كل حاجة اتحطت في spreadsheets.
-- **Universal assets:** أصول تتعاد استخدامها عبر كل الـ worlds والـ regions (زي الأسلحة والشطرنج وأي حاجة مشتركة). الهدف مزدوج: **consistency** بين كل الـ levels، و**uniqueness** لكل level.
-- **الـ Object Pipeline** بيتبني على الـ universal assets دي (هنعرض تفاصيله تحت).
+- الـ pipeline = **flowchart** عمله لشركته Globex Studios في الصين من ~10 سنين: «الأشمل بين كل pipeline docs عملتها»، حوالي 30 صفحة. هو نفسه قال إنه **ماشافش المستوى ده من التفصيل في أي شركة اشتغل فيها** — ماتعتبرهوش standard.
+- **ليه اتعمل بالتفصيل ده:** حوالي 250 واحد في الفريق، بيبنوا MMORPGs (ضخمة ومعقدة)، أغلبهم junior، ومشكلة لغة إنجليزي → الوثيقة اتترجمت صيني. الجونيور يعرف خطوة بخطوة: إزاي يعمل كل asset، character، level، إزاي يدمج، فين الـ approvals، مين بيقرر ومين متورط في كل خطوة.
+- **الأخطاء الغبية اللي بتتكرر في الإنتاج وده اللي اتعمل عشانها** ★★:
+  - Naming conventions (اسم الـ asset إيه).
+  - الـ asset في أنهي directory.
+  - اتعمله check-in في source control ولا لأ.
+  - خلّص شغله وحفظه ومشي للتاني **من غير ما يرجّعه للّعبة**.
+  - ماخطرش في باله **يبلّغ الشخص اللي بعده** إن الشغل جاهز.
+  - حطه في الـ directory الغلط → حد تاني يضيّع ساعات يدوّر عليه.
+  - ماعملش setup صح ونسي خطوة.
+  - ده بيحصل أكتر مع الناس الأقل تقنية.
+  - **الباترن:** الإنسان مابيفتكرش كل خطوة تلقائيًا → الـ pipeline = checklist ملموس بيتمشّى عليه ويتتأكد منه.
+- **الـ Excel المرافق (ما اتكملش):** لكل خطوة في الـ flowchart بيتحدد:
+  - مين الناس المتورطين (مثال: «دي هتاخد 2 artists + art director»، «دي artist واحد»).
+  - الوقت بشكل تقريبي جدًا.
+  - الأدوات.
+- **تقدير الوقت بيتعمل ويتصحح:** في بداية المشروع الـ producers يتحققوا: «هل ده فعلًا 38 ساعة شغل؟» ويقارنوا بالتقدير ويعدّلوا → الجدولة بتبقى أدق مع الوقت. الأرقام اتراجعت من فرق اللعبة كمان مش من الـ producers لوحدهم.
+- **الـ Key (legend) بتاع الفلو تشارت:**
+  - عنوان، خطوات، sub-steps.
+  - أشكال مخصصة للـ approvals/validation: لو فشلت **ترجع لخطوة سابقة وتلف في loop لحد ما تتوافق**.
+  - **الخطوط المنقّطة = اختيارية.**
+  - الصفحات بتشير لـ pipelines في صفحات تانية (cross-department).
+  - الترقيم بيربطها بالـ Excel (مرجع سريع بس).
+  - كان مقصود يبقى **interactive** (الأزرار تنقل لصفحة الـ pipeline الأعمق).
+- **لموسفولك:** الـ pipeline الأدنى لينا = checklist لمحتوى الليفل/الـ creature: naming، المكان، check-in، **إشعار الخطوة اللي بعدها** (مين بياخد الليفل بعد المولد؟ البوت؟ المصمم؟). ونعمل جدول تقدير ساعات بنصححه من الواقع بعد أول 3–4 batches.
 
 ---
 
-## 5. الـ Zone Construction وترتيب الـ Dependencies
+## 2. Universe → Global assets → Universal assets (12m–25m) ★★★
 
-- ★★ **Zone object pipeline:** الـ zone objects زي الشجر والمباني والـ props. كل object ليه: 3D model، textures، LODs، وأحياناً concept art. دي «الـ Lego bricks» ومعظمها شغل artist.
-- **الشغل بيحصل بالتوازي لما يكون مفيش dependency:** مثال، الـ objects والـ NPCs ممكن يتعملوا في نفس الوقت (فريقين مختلفين).
-- **الـ dependencies الصريحة:**
-  - **Skeleton + skinning بيعتمدوا على الـ base mesh.** مينفعش تعمل skeleton قبل ما الـ mesh يبقى موجود، ولا تعمل animation قبل الـ skeleton.
-  - **Special effects بتعتمد على الـ objects:** مثال الـ fire pit: بتتعمل الأول، وبعدين الـ effect بتتربط بيها. نفس الكلام على الـ torches والسيوف المشتعلة.
-  - **Audio:** مثال الصندوق (chest) بيفتح ويصدر صوت «كريك». ومثال تاني: الـ footsteps بتختلف حسب الـ material اللي اللاعب ماشي عليه (عشب، حجر، معدن «clank clank»). يعني الصوت لازم يعرف الـ trigger والـ material.
-  - **Animation + effect + audio في نفس اللحظة:** مثال الصندوق: بيفتح (animation) + sparkle زي Zelda (effect) + صوت مكافأة صغير (audio). ممكن تتعمل بالتوازي بس بتتربط بالتسلسل عشان تطلع أحسن.
-- **Performance validation (من أهم الحاجات في المستند):**
-  - الفكرة: مشاريع كبيرة بتعمل levels مبهرة وبتكتشف إن الـ game بيشتغل بـ **5 frames per second** لما تحط عليه شخصيتين. السبب: الـ zone كانت ثقيلة بالـ polygons والـ memory، ومفيش مكان للـ AI والـ gameplay. المحاضر بيقول إن الحالة دي كلفت **سنة كاملة** في بعض الفرق.
-  - **الحل: memory map** بتتعمل مسبقاً، بيعرف الكل قد إيه مسموح للـ level وقد إيه فاضل للحاجات التانية.
-  - **مثال Munch's Oddysee:** الـ character الأول (default) كان حوالي **10 MB** (model + texture + skeleton + animation + AI). الـ instance بعدها ~100 KB بس. المشكلة إن كل level فيه حوالي 10 characters، فيعني حوالي **100 MB** والـ Xbox كان فيه **64 MB** بس. الحل: قللوا الـ levels لـ **4 characters لكل level** وأعادوا تصميم الـ levels عشانها تشتغل.
-  - ★ **الباترن:** الـ performance مش بس مشكلة art. الـ memory budget لازم يتحسب من الأول لكل حاجة (art، characters، AI، music، sound). الـ performance validation بيكون ليها خطوة في الـ pipeline، مش بعد ما تخلص.
-- **Music وSound effects:** ممكن تتحط على مستوى الـ level كلها، أو تتحط حسب الـ area (مثال: قريب من base العدو تسمع موسيقى من مكبرات صوت)، أو تتربط بـ object (الصندوق بيعمل صوت لما يتفتح). المصمم بيضيفها ويعمل localization.
-- **Focus testing والـ validation:** نادراً الـ level تطلع صح من أول مرة. المحاضر بيقول غالباً **3 لـ 5 passes**. مش شرط تغير الموسيقى كل مرة، بس ممكن تحتاج تعدلها حسب إعادة بناء الـ level.
-- **Final polish:** إضافة art أحسن أو تفاصيل صغيرة، وبعدين bug testing للـ zone.
+**الـ Universe (البداية):**
+- بنبدأ بالـ universe: اللعبة إيه، الـ IP، الـ world building، نظرة high-level على كل الـ zones.
+- ملحوظة مصطلحات: الـ zone ≈ level/area/map/جزء من العالم. الـ MMO/open world بيختلف عن اللعب الأصغر.
+- خطوات الـ designer:
+  1. **Text summary:** نص بيحدد مين عايش هناك، الأعداء، الـ NPCs، القصة، المناطق، خريطة العالم، **flowchart لتقدم اللاعب**.
+  2. **High-level story overview** لكل الـ zones («10,000 foot / mile-high view»).
+  3. **Visual inspirational concepts.**
+  4. **ترجمة:** كان عندهم مصممين بإنجليزي ومصممين بالصيني/ماندرين، فترجمة الوثائق في الاتجاهين. **6–8 مترجمين in-house فل تايم** بيترجموا الوثائق والإيميلات بين الفرق (فريق 200+).
+  5. Approval — لو مارفضتش ترجع من الأول.
+  6. التذكير بـ check-in الوثائق: «بيبان غبي، بس مذهل كام مرة الناس ماعملتوش». الملاحظة: ده كان زمن MS Office من غير Google Docs live. فاللي بتتعمل live مش محتاجة check-in، **اعرف إيه المناسب لمشروعك/فريقك/تقنيتك**.
 
----
+**الباترن ورا التفصيل الزيادة:** وثيقة pipeline مفصلة بالشكل ده بتبقى أهم ما يمكن مع **(أ) فرق كبيرة، (ب) فرق multinational، (ج) outsourcing**. الـ outsource art teams مابيعرفوش الـ engine ولا الـ tech ومش موجودين عندك → **كل ما كنت أدق وأدق في المطلوب، النتيجة أحسن.** قال إنها «ممكن تنقذ مؤخرتك».
 
-## 6. Source Control والـ Backup (فصل الـ raw files عن الـ game files)
+**Global assets (الحدود من يوم 1)** ★★★:
+- **Reuse بكثافة. حدّد standards بدري:** كام character، كام body type، كام skeletal type، modular characters/vehicles/enemies. الأساس ده بيحدد **كم الجديد/الأصلي المسموح وكم المقيّد**.
+- السبب: حتى بـ 200 واحد، للعبة حجم World of Warcraft **مافيش manpower** تعمل أي حاجة تتخيلها يوم 1 → قيود تقنية وإنتاجية لازم تتقال من اليوم الأول.
+- أنواع العوالم: كام نوع؟ صحرا، غابة، fantasy. لعبته كانت **time travel + universes مختلفة** (sci-fi + fantasy + modern day معًا).
+- **العمارة:** عدد أنواع مباني غير محدود ولا categories (modern / fantasy / sci-fi)؟ تحديد الـ categories كان مهم.
+- مشاركة assets/props/enemies/creatures. جداول تفصيلية في Excel: إيه المشترك في textures، animations، LODs، AI. بعدها ترجمة → approval → check-in للقوايم. (كان شغل Excel وWord).
 
-- ★★ **المشكلة الشائعة:** الـ artist بيشتغل في Maya وPhotoshop. الـ raw files (`.ma` / `.psd`) بتتحفظ محلياً على جهازه بس. بيعمل export لـ FBX للمحرك، وبيفكر إن ده كفاية.
-- **النتيجة:** لو الجهاز اتعطل، معندكش غير الـ FBX. ومش هتقدر ترجع تعدل الـ model أو الـ textures الأصلية بسهولة (لو اتعمل بالعكس تبقى شبه مستحيلة).
-- **الحل المعمول:** فيه نظامين source control: واحد للـ **raw files**، وواحد للـ **game files**. وكمان **triple redundancy**: الجهاز المحلي + سيرفرين مختلفين + الـ SVN source safe server. ومفيش asset بيتمسح أو بيضيع.
-- **تعليق المحاضر:** الـ artist بيكون الأسهل يتلام هنا، لأنه غالباً الأكتر إهمالاً للـ raw files.
-- **ملاحظة تقنية:** تفاصيل FBX وتكوين الـ SVN والـ import settings → **الباقي برمجة — متجاهل.** الدرس التصميمي والعملي هو: احفظ الـ source، وامتلك أكثر من نسخة.
+**Universal assets:**
+- حاجات reusable بين worlds/levels/regions. كل world مش 100% unique، فيه set عالمي (weapons، chests) للـ **consistency/coherency** + uniqueness لكل level.
+- بتتفرع لـ pipelines أعمق: features الـ assets، stories، asset sets، shared object features، object pipeline، base universal assets.
 
----
+**التخطيط في pre-production:**
+- ده شغل designer بس لازم الـ art والـ engineering يشاركوا (الكل بيحدد إيه هيتحط في اللعبة).
+- بنرجع للـ Excel: مثال تقدير terrain «40 ساعة أو 80 ساعة» → كام ناس عندنا → كام man-hours → **نضيف buffers** → ده بيقول كام حاجة نقدر نعملها. **نقيّد نفسنا من يوم 1**. المرحلة بتحاول «guesstimate» كم نقدر نعمل وفين نوفر وقت وموارد.
 
-## 7. الـ Concept للزون وخطوات تصميم الـ Gameplay
+**★★★ تعريف الـ Done (الأهم في الجزء ده):**
+- بنعمل assets أساسية، نترجم الوثائق، **ونعمل verify بوضعها في الـ engine وتشغيلها فعليًا**.
+- قوله: «**مافيش حاجة اتعملت إلا لما تبقى جوه اللعبة وقابلة للعب وأقدر أشوفها وألمسها وألعب بيها.**»
+- **المفهوم الغلط الشائع:** الـ artist يخلص ويقول done. «لأ، شغلك خلص، الـ asset لسه ما خلصش». ممكن يحتاج خطوة أو 100 خطوة لحد ما يدخل اللعبة. والكلمة «done» ماتتقالش لحد ما يدخل اللعبة ويخلص. **ده team effort.**
+- بعدها: verify → approve → revise the list.
 
-- **الـ concept للـ level** بيتعتمد من الـ lead (level lead أو chief creative officer أو creative director). لازم تعرف مين بيعتمد إيه وإمتى.
-- **White box:** نسخة رمادية بدائية تقدر تجري فيها، بتوضح الـ gameplay بس مش شكلها النهائي.
-- **الـ concept art** بيبدأ بعد ما المصممين يحددوا الـ zone (عشان الـ concept artists يعرفوا يرسموا إيه).
-- **الـ enemies في الزون:** فيه **universal enemies** (موجودين في أي مكان) و**zone-specific enemies** (زي الـ civilians أو اللي شغالين في مخبز أو حداد بيبيع armor). كل نوع له pipeline وترجمة واعتماد.
-- **الـ gameplay pipeline (الأساس):**
-  1. **Scripts والـ mobs:** المصمم بيحط الـ mobs، وهم مجموعات أصغر من الـ enemies بتتقاتل بالجملة. بيتعمل لهم scripting، AI behaviors، ومسارات:
-     - هل بيمشوا على patrol path ثابت؟
-     - ولا عندهم منطقة بيتحركوا فيها عشوائياً؟
-     - ولا واقفين؟
-     - ولا عدوانيين أو defensive؟
-  2. **Quests:** المصمم لازم يعرف الأعداء فين، والـ quest هتمر فين، ومش هتمر على منطقة قاتلة. المثال: quest بين A وB لو خط مستقيم ممكن يعدي من منطقة الموت، فتتعمل route تاني.
-  3. **NPCs:** كل الشخصيات اللي مش أعداء، سواء تفاعلية أو لأ (عربيات، خيول، ماشيين في الشارع).
-  4. **Vendors، crafting، trainers:** NPCs بتدي قيمة للاعب (quests، equipment، تدريب).
-  5. **Items والـ economics:** أسعار، أماكن، regions، ومنطقة الـ vendor. ★★ **الـ costs لازم تتبنى على bell curve:** تبدأ رخيصة وتزيد exponentially، عشان تدخل اللاعب تدريجياً. والـ trainers والـ vendors لازم يكونوا متاحين بدري والتكلفة منخفضة، عشان الـ newbie ميتأخرش.
-     - ★ **مثال strategy:** لو فيه zerg rush، لازم تعرف من الأول إن التكتيك ده ممكن يخسر بشكل كبير، والـ economics بتحدد ده.
-  6. **Cutscenes، bosses، resources:** مثال portal gateways: teleport بين الـ regions. ومثال **special events**: معركة بين فصيلين بتحصل في منطقة، واللاعب يقدر يتجنبها أو يشارك، أو يتعمل لها scripting مخصص.
-  7. **Hazards:** مصايد، spike pits، lava، acid pools (أي حاجة بتأذي اللاعب).
-  8. **Construction approvals** من الـ lead.
-  9. **تربيط الـ zones ببعض والـ secondary gameplay** (في الـ MMO ده مهم جداً).
+- **لموسفولك:**
+  - عندنا لازم نكتب **تعريف done** للـ level/creature/challenge: يبقى في build + اتلعب بالبوت وطلع bot_difficulty + اتعمله check ملف الإعدادات.
+  - ونحدد caps من الأول: 9 أحجام × كام skin/variant؟ (أسلوب الـ standards المبكرة).
+  - المهم إن قيود الـ jar/الـ physics تتكتب قبل ما الـ content يتولّد.
 
 ---
 
-## 8. الـ MMO Endgame: مثال Ghost Goggles
+## 3. Zone Construction + Performance Validation + Source Control (25m–40m) ★★★
 
-- **المشكلة:** في MMO اللاعبين بيوصلوا للـ level cap (في المثال: **60**، وWoW بدأت بـ 60 وبعدين رفعت لـ 100 ومن بعدها لحد حوالي 180). لو كل المحتوى مخلص، اللاعب بيحتاج يرجع يلعب نفس الـ levels.
-- ★★ **الـ in-game mode (endgame) ممكن يبقى أربح mode**، لأن اللي وصل للنهاية غالباً متعلق باللعبة، وده بيخلي فيه **whales** كتير. المحاضر بيحذر إنه منزلق: لازم تديهم محتوى بدون ما تكسر اللعبة.
-- **الحل الذكي (Ghost Goggles):** لما اللاعب يوصل لـ level 60 أو يركب نظارة (goggles) بتخليه يشوف عالم الأشباح. الـ enemies بتتكرر كـ **ghosts** بنفس الـ models تقريباً:
-  - **Visual:** transparency + blur + effect (شكل شبح). ده شغل effect بسيط.
-  - **Stats مختلفة:** لأن الـ ghost model ليه اسم وstats منفصلة، فالـ ghost ممكن يكون level 50 أو 60 وأقوى بكتير، وممكن كمان يضرب بـ psionics (مهارات سحرية).
-  - **أسلحة مخصوصة:** لازم سلاح يقدر يقاتل الـ ghosts، عشان الـ gameplay يبقى مرتبط بالمحتوى الجديد.
-  - **Doors ومحتوى إضافي:** اتضافوا بنفس الفكرة.
-- **النتيجة:** الـ level designers ما اتعبوش (تقريباً ما عدلوا حاجة)، وكل الـ art اتعاد استخدامه، واللاعبين بيقدروا يضاعفوا أو يطلعوا x3 من وقت اللعب.
-- **الباترن ورا الحل:** المحاضر بيقول إن الحل الإبداعي ده نتيجة **القيود** (ميزانية، جدول، ذاكرة، art محدود). كل حاجة تقدر تتعاد استخدامها، والقيد نفسه بيقود للـ design الذكي. ومثال آخر: الـ enemies بتتحول لـ zombies بعد ما تموت (تقاتلهم مرتين)، أو zombie أقوى بقدرات سحرية.
+**ترتيب خطوات بناء zone:**
+- Concept the zone (بديهي) → construction للـ zone assets.
+- **الـ objects:** الـ basic zone objects (من الشجر للمباني)، **3D models + textures + LODs**. «زي طوب الليجو». شغل artist غالبًا، ممكن يحتاج concept art.
 
----
+**Dependencies والـ Parallelism** ★★:
+- **ممكن بالتوازي:** objects وNPCs (عنده كانوا فريقين مختلفين). 
+- **dependency:** الـ skeleton والـ skinning والـ animation **لا تتعمل قبل الـ base mesh/base character**.
+- **الـ Special effects:** ممكن standalone (fireworks) أو متعلقة بـ asset: **bonfire لازم يكون فوق fire pit** (الـ object يتعمل الأول وبعدين الـ effect). نفس الشيء torches، fire pits، **flaming sword / magical swords**.
+- **الـ Audio:** لو الـ asset ليه صوت unique (chest بيطلع صرير لما يتفتح).
+- **سلسلة الـ chest (مثال Zelda):** animation الفتح → sparkle effect (غبار/لمعان) → audio reward. «بتتعمل بالتوازي بس **بالتسلسل أحسن**». (قال إن label «NPC animation» في الشارت غلط، لأن العلاقة zone ويشمل chest مش بس characters.)
 
-## 9. الـ Terrain والـ Roads (Zone Terrain Artwork)
+**★★★ Validate Performance (خطوة أضافها لفريقه):**
+- **المشكلة:** الليفلات بتتزوّد: «هرمي حاجات كتير وأعمل أحلى ليفل». بس لازم تحط فيها characters وAI وvehicles وgameplay logic، وكلها بتاكل memory وCPU.
+- **القصة:** رأى فرق كبيرة/محترفة عند ناشرين كبار: اشتغلوا **سنين**، عملوا كل ليفلات اللعبة 100% polished مع fly-throughs مبهرة. سلموها لفريق الـ gameplay programming، رموا كام character فنزلت اللعبة لـ **5 fps**. ما عرفوش ليه، وبعدين اكتشفوا إن الـ zone ثقيلة (polygons/memory) ومافيش مكان لأي حاجة تانية. **كلفت الفريق ~سنة** يرجعوا لكل الـ process ويعملوا re-optimize.
+- **القاعدة:** الـ zone performance = **memory map يتعمل قبل وقت** يعرف الكل كام ممكن تحط في ليفل **ويفضل مكان لكل حاجة تانية**.
+- **بتشتغل في الاتجاهين، مش بس level art:** **Munch's Odyssey** (زي ما قال):
+  - الـ default character (model + texture + skeleton + animation + AI) نسخته الأولى ~**5–10 MB** (مش متذكر الرقم بالظبط، قال «maybe 10 MB»).
+  - الـ instance منه ~**100k** بس.
+  - الـ levels كانت مصممة بـ **~10 characters** → ~100 MB، على Xbox **64 MB** كل الـ memory (على حد اعتقاده).
+  - يعني **ضعف الـ memory في الـ characters بس**، من غير العالم.
+  - الحل: شالوا كل ده، وقالوا «**4 characters لكل level وبس**» وعملوا redesign للـ levels على أساس 4.
+- **الباترن:** الـ budgets لازم تتقسم على كل الأنظمة المتنافسة **قبل** ما أي قسم يبني بحرية.
 
-- ★★ **الـ terrain pipeline:**
-  1. **Sculpt الـ terrain** (نحت الأرض).
-  2. **Lay out الـ roads:** الـ roads عندها نوع خاص في معظم الـ engines، لأنها لازم تتبع الـ terrain وتلف حوالين الحاجات، وممكن تربط regions ببعض، ولازم تبان مميزة.
-     - الـ roads اللي حوافها حادة جداً بتبان مزيفة. لازم تتعدل.
-     - الـ roads الحقيقية مش بتقعد على الأرض مستوية: ممكن تنزل شوية، أو تحتاج **bridges** (مثال: الطريق بيعدي على وادي بجسر مش بينزل لقاعه).
-     - الـ roads والـ rivers والحاجات الطويلة اللي بتتلوى على الأرض **من أصعب الحاجات**، والـ engines الحديثة بقت أحسن فيها.
-     - ★ **Roads ممكن يبقى ليها AI بيشتغل عليها** (AI عارف إنها طريق وإنه يقدر يتحرك عليها بعربية مثلاً).
-  3. **التخطيط للمدينة والمباني:** تحديد أماكن المباني، أو clear لمساحة مستوية أو white box.
-  4. **Rough terrain textures:** رسم الـ texture الأولي للأرض كلها.
-- **مشكلة الـ cliffs (وحل modular tiles):** لما تعمل جرف عمودي على الـ terrain، الـ texture الواحدة اللي بتتعمل **projection** من فوق بتتقطع (tearing) على الوجه العمودي. الحل المعمول: **3D models للصخور والـ cliffs** بيتحطوا جنب بعض عشان الوجه يبان كأنه صخور حقيقية. المحاضر بيقول إنك على الأغلب شفت الشكل ده في ألعاب كتير ومعجبكش.
-- **Terrain tools حديثة:** فيها أدوات ممكن تعمل دا كله تلقائياً. مثال: تقدر تستورد بيانات **USGS** وبيانات حقيقية وتعمل map لأماكن حقيقية. وممكن تحدد قواعد **بالارتفاع والـ slope**: مثال:
-  - عند sea level (صفر): texture رمل/desert
-  - لفوق: تتحول لـ dense forest
-  - بعدين chaparral وrocky
-  - في القمة: snowy mountains
-  - والـ slope ممكن يغير الـ texture كمان.
-- **الباترن ورا ده:** المصمم مش مضطر يعمل كل حاجة يدوياً، والنظام يبقى **semi-intelligent**. ★ **المحاضر بيقول إن الـ process بيتغير مع التطور، فبص لمستقبل الـ tools بتاعتك مش للـ workflow القديم.**
+**Music & SFX في الـ zone:**
+- موسيقى عامة على الـ level كله أو **حسب المنطقة**.
+- موسيقى diegetic localized (قرّبت من enemy base تسمع موسيقى كإنهم شغالين loudspeakers/ستيريو).
+- ممكن تتربط بـ object (الـ chest لما يتفعّل يلعب SFX). بتتضاف بواسطة level designers.
 
----
+**Focus test & validate:**
+- **مش بس شغّال — هل ممتع؟** لو لأ نرجع نبني ونغير.
+- **دورة circular: «نادرًا بتتظبط من أول مرة — عادةً 3 أو 4 أو 5 passes».** الموسيقى والـ SFX مش لازم تتعاد كل مرة بس بتتظبط وتتعدل مع إعادة بناء الـ levels.
+- بعدها **final polish:** art أحسن، تفاصيل «nitpicky»، bug testing، upload لـ source control.
 
-## 10. الوقت واللايتنج والطقس والـ Animations (Zone Finishing)
+**★★★ Source Control وBackup (قصة الـ raw files):**
+- الاسم: SVN (برنامج check in/out بيمنع الحذف بالغلط).
+- عندهم **نظامين source control: واحد للـ raw files وواحد للـ game files**.
+- **الخطأ الشائع (الـ artist):** بيشتغل في Maya + Photoshop، بيحفظ PSD وMaya (raw formats يمكن يتعدلوا في أي وقت)، وبيعمل export لـ **FBX** (format شائع، Unreal/Unity بيستوردوه). الـ raw files بتفضل **محليًا على جهازه** على hard drive واحد، مش على server ولا source control. لو الجهاز مات: **عندك الـ FBX بس**، و«الـ extraction من FBX للـ raw عشان تعدل = صعب لمستحيل».
+- حصلت له **«مرات كتير جدًا»** وبتضرك لو الجهاز مات أو احتجت تعدل في آخر لحظة.
+- خطوة «upload to SVN» بتفكّر الناس يرفعوا الـ raw files (وكل حاجة).
+- **Triple redundancy:** كل واحد عنده project folder directory وpersonal directory ومطلوب منه يعمل back up للاتنين: **سيرفرين مختلفين**. فكل asset في **3–4 أماكن** (local HD + سيرفرين + SVN server) = «مافيش حاجة اتفقدت حتى لو system كامل وقع».
+- بعدها approval وإكمال الـ zone.
 
-- ★★ **الـ 24-hour clock في الـ MMO:** لازم يبقى فيه **consistency**. مش لازم اللاعبين كلهم يشوفوا نفس الوقت بالظبط بس لازم الـ world يبقى منطقي. في single player تقدر تتحكم، لكن في MMO فيه ممكن 100 أو مليون لاعب في نفس الـ level، ولازم لو لاعب خرج ورجع الوقت يكون متسق (مش يبقى ليل فجأة).
-- **Hyper-accelerated clock:** المحاضر بيحكي إن 24 ساعة في اللعبة ممكن تكون حوالي **4 ساعات حقيقية**. مثال: لو الساعة 12 الضهر دلوقتي، بعد ساعتين الشاشة بتبقى سودا (منتصف الليل)، وبعد ساعتين تانيين الضهر تاني. وكمان فيه dusk وdawn.
-- ★ **الوقت مش بس للـ visuals:** ممكن يأثر على الـ gameplay (مثال: NPCs أو أعداء بيطلعوا بالليل بس). يعني الـ time system بيربط بالـ gameplay.
-- **Weather والـ effects والـ animations:** كل حاجة في الـ level بتتحط: الطقس، الـ effects، الـ animations (مثال: waterfall، أو rock slide قابل للـ trigger). وممكن تكون one-off (تحصل مرة وتتغير permanent) أو تتعمل reset. وفيه rules لكل ده.
-- **Collision مع الـ performance validation:**
-  - ★ **Invisible walls:** بتتحط عشان تمنع اللاعب من حاجة (مثال: فجوة صغيرة في الجدار، اللاعب يدخلها والكاميرا تتلخبط ويتعلق). الـ collision بيتعمل manual عشان يحل bugs أو يمنع السقوط من حافة معينة.
-  - **الحاجة المهمة:** الـ collision للـ player والـ NPCs ممكن يكون مختلف عن الـ geometry الظاهرة، ودي مشكلة قديمة.
-- **Zone bug testing:** فحص أولي (first level of bug testing) وتأكد إن مفيش حاجة شكلها غلط. وتذكير بعمل backup.
-
----
-
-## 11. الـ Objects (Generation، LODs، Concept Sketches، Stats)
-
-- ★★ **الـ objects في MMO ممكن تتطور (upgradeable).** لازم تحدد قواعد التطور: هل نفس الـ base object بيتغير (لون، tint)؟ هل الاسم بيتغير؟ إيه اللي بيحصل لو الـ object اتطور؟
-- **Validation للـ design** قبل الـ modeling. وتحديد الـ requirements وعدد الـ LODs.
-- ★★ **LODs (Level of Detail):** نسخ من الـ object بدقة أقل كل ما يبعد. مثال: object بـ 10,000 polygon ممكن يبقى له نسخ بـ 5000، 2500، ... لـ 50. وعلى مسافة بعيدة جداً ممكن يكون مجرد texture أو silhouette.
-  - **Popping:** لو الانتقال بين LOD والتاني سريع أو حاد، بيحصل **pop** (الـ object يقفز فجأة). ده أسوأ حاجة، والـ LODs لازم تتعمل بعناية.
-  - **مثال الـ hands:** في LOD بعيد الـ hands بتبقى مجرد كتلة بدون animation. في متوسط، الصوابع بتبان بس مش بتتحرك كويس. قريب جداً، الـ hands بتتحرك كاملة، والـ facial animation بتتفعل. لما تبعد الـ facial animation بتتحول لـ texture.
-  - المحاضر بيقول إن الـ LODs كانت أكتر ضرورة زمان، والـ consoles الحديثة (PS5) قللت الحاجة، بس **موبايل** وغيره لسه محتاجينها.
-- **Concept art بالـ orthographic views:** الـ concept art العادي بيكون بزاوية منظور وصعب تعرف الحجم. فالـ artist لازم يعمل **side view، top view، back view** من زاوية مستقيمة (مش منظور)، عشان الـ modeler يقدر يستخدمها كـ blueprint بدقة. بيوفر وقت كبير.
-- **الـ flow:** concept، validation، sketch تفصيلي، ثم modeling، textures، variants، LODs.
-- **Naming وأماكن الـ files:** تأكد إنك حطيت كل asset في المكان الصح وسميته صح، وإنك عديت الـ polygon count وحجم الـ texture.
-- ★★★ **قصة Die Hard (الدرس الأهم في المحاضرة):**
-  - لعبة FPS فيها performance مشكلة، والفريق حاول أسابيع يعرف السبب.
-  - المحاضر طار للمطور، وقعد معاه، وفي **30 ثانية** شاف موديل واحد وسأل: كام polygon في سلة المهملات دي؟ الـ artist قال حوالي **10 مليون**. المحاضر ضحك وقال إنها كان المفروض تبقى حوالي **100 polygon**.
-  - المشكلة: جنيور عمل الـ asset، ومكانش عارف الـ limitations. وحط منه مئات في الـ level، فكان فيه **مئات الملايين** من polygons بيتم رسمها، وفي الوقت اللي المفروض فيه **مليون أو اتنين** بس. يعني حوالي **100x** فوق الـ budget.
-  - **الدرس:** الـ asset الصغير ممكن يقتل الـ game. لازم حدود (polygon limits، texture sizes، عدد الـ models).
-- ★★ **قصة 122 Characters:** في اللعبة كان المفروض **4 body types، 4 skeletal meshes، 4 مجموعات animations** (~100 animation لكل مجموعة، يعني ~400 animation بس للعبة كلها). لما المحاضر رجع من الولايات المتحدة لقى الفريق عمل **122 model و122 skeleton** وكل واحد فيه 100 animation، يعني حوالي **12,000 animation**، والـ memory بقت أكتر بحوالي **25x** أو أكتر. ده ضيّع **شهور** شغل. والسبب: الفريق ماكانش فاهم أو نسي الـ limitation.
+- **لموسفولك:**
+  - **memory/physics budget لـ Mossfolk** قبل الـ content: كام physics body متزامن في الـ jar، كام particle للـ merge، حد للـ mossy/rot shaders على الموبايل. لأن Mossfolk أساسها physics وهو أول حاجة تنهار في الأداء.
+  - **درس Munch's:** المخلوق الأول غالي والـ instances رخيصة → نعتمد على النسخ المشتركة.
+  - **مصادر الـ art الخام** (مش بس الـ exports اللي في Unity) تتخزن ويتعمل لها backup منفصل.
+  - **دورة 3–5 passes** لازم تتحسب في جدول الليفلات: البوت بيقيس الصعوبة، بس «ممتع؟» لازم pass بشري على الليفلات المفصلية.
 
 ---
 
-## 12. الـ Characters (Player Characters: CAP و الـ Armor)
+## 4. Zone Concept & Zone Gameplay (40m–50m) ★★★
 
-- ★★ **الـ player characters بتتعامل بطريقة مختلفة عن الـ hero الفردي:** مثال Kratos في God of War: شخصية واحدة، أسلحة وأزياء خاصة بيه. لكن في اللعبة دي الـ armor والـ weapons كانت **shared** بين الـ characters. يعني معظم الـ art (حوالي **90 لـ 95%**) كان بيتعاد استخدامه.
-- **الـ CAP system (Create A Player):** اللاعب يقدر يعمل شخصيته: يغير الوش (أوسع، أنحف)، لون البشرة، الشعر، العيون، نوع الجسم. ولازم قواعد تضمن إن كل قطعة armor تتركب على كل الـ characters.
-  - اللعبة فيها **60 level** تقريباً، وكل 5 أو 10 levels فيه armor sets جديدة، ولكل class armor مختلف. يعني **آلاف** القطع اللي لازم تتركب على نفس الـ characters.
-  - ★★ **الاختبار المبكر للـ CAP:** لازم يتعمل تستينج كويس من بدري عشان يتأكد إن كل الأجزاء بتشتغل مع بعض. ده نظام معقد وصعب.
-- **الـ reuse الذكي للـ armor:** مثال: black armor وred armor، والاتنين نفس الـ model بس فرق **tint** (لون) وshader وeffect (مثلاً red = fire armor وفيها شوية نار). لو الـ base model اتغير، كل النسخ بتتحدث أوتوماتيك.
-- **الـ rules اللي لازم تتحدد:**
-  - مين يقدر يلبس إيه؟ (هل مرتبط بـ class؟)
-  - الـ armor مرتبط بالـ level؟ ★★ **مثال المشكلة:** level 10 لابس armor level 50 بيبقى مربك، والعكس: level 50 لابس armor level 10 هيفتكر إنه قوي وهيتفاجئ إنه اتقتل بسهولة. يعني **الـ visual يقول مستوى الـ armor**، واللاعبين بيفهموا منه القوة.
-  - الـ names والـ stats والـ variations.
-- **الـ animation للـ armor:** ثابت (shield/helmet ثابت) ولا متحرك (ريشة في الخوذة بتتحرك مع الهوا)؟ ولو متحرك، إزاي يتعمل؟ ممكن يبقى system منفصل (skull system).
-- **الـ NPCs والـ players بيستخدموا نفس الحاجات تقريباً**، فلازم يتفهموا مع بعض.
+**Concept:**
+- designer بيصمم: quests، enemies، assets، 2D maps. (أشار لـ streams سابقة عن world building).
+- **الترتيب:** concept approval → تقدير المدة وجدولة → **White box** (هندسة خام رمادية/بيضا، تقدر تجري فيها، **تعبّر عن الـ gameplay ومش شبه الشكل النهائي**) → concept art (المصمم حدد مسبقًا إيه في الـ zone فالـ concept artist عارف يرسم إيه).
+- **Universal vs unique:** أعداء universal ممكن في أي مكان، وفيه units unique للـ zone: civilians (شغالين في مخبز)، blacksmith بيبيع armor. أعداء zone unique + NPCs zone unique. ترجمة → approval → asset lists → finalize + check-in.
 
----
+**Core gameplay — الترتيب اللي المصمم بيبني بيه ★★★** (بعد ما الـ 3D maps تقريبًا خلصت):
+1. **Scripts و mobs:** الـ mob = enemy NPC، وحدات أصغر swarmer بتتحارب «bulk». بنحدد AI behaviors والـ paths: **fixed patrol، منطقة بترتد فيها عشوائي، أو واقف ثابت**؛ عدواني ولا دفاعي.
+2. **Quests:** لازم تعرف **الأعداء فين والحاجات المهمة فين** عشان الـ quest يمر بيهم أو يتجنبهم. مثال: A→B بخط مستقيم ممكن يعدي على **منطقة high-level اللاعب هيموت فيها** → نلف الـ route حواليها. «لازم نعرف إيه فين ومتى مقدمًا».
+3. **NPCs:** مش أعداء، تفاعليين أو لأ (سواقين عربيات، راكبين خيل، ماشيين).
+4. **Vendors/crafting/trainers:** helpers = NPCs بيدوا قيمة (quests، equipment…).
+5. **Items & economics:** إيه هي، تكلفتها، فين، أنهي region، إيه المتاح من كل vendor، **القوايم dynamic ولا designer-controlled**.
+   - **قرار مهم:** لو بدأت اللاعب بشكل وحش وأخد وقت طويل يوصل لـ «cool» ده تحدي. فلازم **يوصل للـ trainers/vendors بدري والتكاليف تبقى منخفضة كفاية**.
+   - التكاليف **«bell curves»** (قال): تبدأ رخيصة جدًا وبعدين تغلى بشكل أُسّي، ونكسر اللاعب في اللعبة بالتدريج.
+   - **الـ economics أهم في الـ strategy games:** لو عايز Zerg rush لازم أعرف مقدمًا. ممكن أجرب وأخسر بشدة، لكن ده جزء من الـ process. (الجملة مش واضحة تمامًا في الترانسكريبت.)
+6. **Basic cutscenes، bosses، resources، portal gateways** (transit سريع teleport بين regions)، **special events** في كل region (مثال: فصيلين بيتحاربوا ملهمش علاقة باللاعب، اللاعب يدخل المنطقة ويتجنب أو يساعد — custom scripted أو جزئيًا scripted أو AI مضاف).
+7. **Hazards:** traps، spike pits، fire lava، acid pools — حاجة بتأذي اللاعب لو لمسها.
 
-## 13. الـ NPCs والـ Monsters
+- **Construction approvals:** مين يوافق ومتى وفين (level lead، chief creative officer / creative director).
+- **ربط الـ zones معًا** + secondary gameplay + PVP (لأنه MMORPG).
+- **Level cap = 60 من يوم 1** (WoW الأصلي 60، ورفعوه بمرور الوقت لـ 100 ويعتقد حاليًا ~180).
 
-- **الـ NPCs** بيتعملوا بنفس الـ pipeline تقريباً:
-  - ★ **الأدوار:** vendor، عدو، تاجر، trainer، named character مهم في cutscene، أو generic (مثل Peasant 1، Peasant 2).
-  - **الـ customization:** لازم يكون فيه شوية unique، والمحاضر بيقول: **80 لـ 90%** reuse، و**10 لـ 20%** unique عشان الـ game يبقى memorable، وعشان اللاعب يقول «آه، ده جديد».
-  - **Randomize ولا ثابت:** هل الـ NPC بيتغير كل مرة ولا نفس الشخص في كل مكان؟ لازم قرار واضح.
-  - **الـ levels والـ stats:** ★ لو عدو level 20 مقابل 50 enemies، ممكن فيه multiplier. ولازم يتحدد أثر ده على الـ weapons والـ armor.
-- **الـ Monsters:** non-humanoids، ليهم شوية reuse (categories وclasses) بس عندهم AI وattacks وanimations خاصة بيهم.
-  - **Skeletal types:** quadrupeds (زي الحصان والكلب)، birds، snakes، spiders، fish، وغيرهم.
-  - **بتتصمم عادة أبسط** وأقل complexity عشان يكون فيه عدد أكبر منها (زي الحياة البرية الطبيعية، مش بالضرورة أعداء).
-- **الـ Rigging (تركيب الـ skeleton):** ★★ شغل متخصص اسمه **rigger**. المحاضر بيقول: **لو انت animator، اتعلم rig**. عنده animators ممتازين بيعرفوا يخلوا الشخصية تتحرك طبيعي، بس مش عارفين يعملوا T-pose وskeleton وسقوف الحركة (range of motion). ★ **الـ rigger الكويس بيحدد الـ restraints:** مثال الذراع ممكن تتحرك لحد معين بس، ولو اتعدت هتبان غريبة. والـ animator بيحرك في الحدود دي.
-- **Skinning:** ربط الـ skeleton بالـ mesh بحيث الـ mesh يتحرك مع الـ skeleton.
-- **Animations:** ممكن تتعمل باليد، أو motion capture، أو مزيج. مثال: لعبة **TNA Wrestling** كل الـ animations كانت mocap وواقعية جداً، والـ jump والـ attack لازم يكونوا دقيقين.
+- **لموسفولك:** الـ rival contests/side quests تتصمم على نفس الأسلوب: **أعرف الصعوبة والموارد قبل ما أحط الهدف** (فكرة A→B). نظام الـ economy (garden/shop لو موجود) لازم **early cheap → exponential**. وبناء ليفل جديد يبدأ بـ **white box** (مثلاً: layout الـ jar + الأهداف + التحديات قبل ما أي art يتعمل عليه).
 
 ---
 
-## 14. الـ Quests (Concepting، Detailing، Implementation)
+## 5. Endgame + قصة الـ Ghost Goggles (50m–57m) ★★★
 
-- **المراحل:** concepting (paper design + approvals + تحديد الـ quest عبر zones)، ثم detailing (الـ 2D maps، الـ world terrain، القصة، الـ cutscenes، تصميم الـ NPCs)، ثم implementation (إزاي تتبنى فعلاً، وإيه الأدوات، وإزاي تتتحقق من الـ rewards والـ testing).
-- ★★ **Quest concept cheat sheet:** الـ quest designers بيسألوا نفسهم دايماً: **who، what، where، when، how**. ده بيخليهم متأكدين إنهم فاهمين كل quest قبل ما يبنوها.
-- **أمثلة للـ quest elements:**
-  - Quest giver ومتابعة القصة.
-  - Targets والـ goals.
-  - Unique art: مثلاً صندوق بيظهر للاعب ده بس (أو لفترة زمنية).
-  - Mobs وBosses (groups).
-- ★★★ **مشكلة الـ Wolves (من أهم الأمثلة في المحاضرة):** quest بتقول «اقتل 20 ذئب». لو اللاعب قتل 10 قبل ما يبدأ الـ quest، والـ spawner مش بيعيد، فمفيش 20 ذئب في العالم. الـ quest تتعطل. وفي **MMO**، لاعب تاني ممكن يقتل الذئب، والـ spawner بيعيد كل دقيقة، فالناس بتقف في **طابور** مستنيين الذئب ساعات. «Horrible game design» بس دي كانت طريقة كتير من الـ MMOs.
-  - **الدرس:** لازم تتأكد إن اللاعب قادر يخلص الـ quest، وإن الـ resources (الـ spawns) تكفي في MMO.
-- **الـ scripting والـ AI behaviors والـ audio** لكل quest: خطوة بخطوة.
+**المشكلة (MMO):** اللاعبين بيخلصوا الـ core content ويحتاجوا حاجة تانية، ويرجعوا يعيدوا الليفلات.
+- **الـ endgame mode أحيانًا الأكثر ربحية:** اللي لعب للآخر **hooked**، «ممكن يكونوا whales». **ماتتجاهلهمش.**
+- **«slippery slope»:** إزاي تدّيهم اللي عايزينه من غير ما تكسر اللعبة. المحتوى لازم يكون **replayable high-level content في نفس الـ levels** (لأن عندنا قيود على الـ amount).
 
----
+**★★★ الحل (Ghost Goggles):**
+- عند level 60 (max) اللاعب **يشتري أو يحصل على goggles تخليه يشوف ghosts**.
+- **كل الأعداء** يتعمل لهم spawn كـ **ghost versions** (نفس الـ models، لكن ghost).
+- ممكن كمان يكسب **أسلحة تنفع ضد الـ ghosts**.
+- **الـ level نفسه 100% زي ما هو** (المصممين ماكانوش محتاجين يعدّلوا، أحيانًا عدّلوا). اللاعبين **يضاعفوا أو يثلّثوا وقت اللعب** على نفس الليفلات. كمان **doors وحاجات** بتتفتح عن طريق «العالم التاني» (الـ ghost world).
+- **التكلفة رخيصة:** ضبط transparency + visual effects + blur + شكل «ghosty». لأنها **model/اسم مختلف تقنيًا**، فممكن **stats مختلفة**: الأصلي level 5 أو 10، والـ ghost level 50 أو 60، أقوى وأكتر قدرات (حتى **psionics blast**/سحر).
+- **الباترن:** محتوى جديد = **layer فوق نفس الأصول والـ levels** (طبقة تغيّر الـ visibility/stats/القواعد)، مش محتوى جديد من الصفر.
 
-## 15. الـ Cutscenes والـ Special Effects
+**الدرس العام (القيود تولّد الابتكار)** ★★:
+- «لازم نحل مشاكل… عمرنا ما هنعمل اللعبة بالظبط زي ما عايزين… ده عالم مش موجود… ممكن Valve أو شركات unicorn قليلة بوقت وفلوس غير محدودين». غالبًا بنشتغل بـ **budgets وschedules وقيود موارد وتقنية**، **ودايمًا بندوّر نعمل الألعاب أسرع وأرخص.**
+- **عشان تحلها:** افهم قيودك من الأول. هو عرف **من يوم 1 إنه محتاج level-60 gameplay** فدخّله في الـ IP بدري جدًا.
+- **مثال تاني:** الأعداء يتحولوا **zombies** بعد ما تقتلهم (تحاربهم مرتين) → وممكن الـ zombie يرجع بقدرات أكتر → magical zombie.
 
-- **الـ cutscenes** ممكن تكون: مُعدة مسبقاً (pre-rendered)، داخل اللعبة، قصيرة (جزء من quest)، أو **interstitials** كبيرة بين regions. كل نوع له pipeline بتاع camera angles والـ timing.
-- **الـ special effects:** تتحط في اللعبة وتتعمل لها pipeline أساسي. الـ effects ممكن تكون standalone (ألعاب نارية في السما) أو مربوطة بـ object (نار على bonfire مثلاً، أو سيف مشتعل، أو سيف سحري).
-
----
-
-## 16. الـ Audio كـ Pipeline مستقل
-
-- ★★ **الصوت أهم من ما بنتخيل:** المحاضر بيقول إن معظم المطورين بيعتبروه **icing على الكيكة** وبيضيفوه في الآخر. لكن في الألعاب الجيدة الصوت بيتفكر فيه **من اليوم الأول**، خصوصاً في الـ horror.
-- **الـ dynamic audio:** الموسيقى بتتغير حسب اللي بيحصل في العالم. مثال: قرب الأعداء الموسيقى بتزيد حدتها، ولما تدخل القتال بتتغير لموسيقى حماسية، ولما تبعد بتهدى تاني.
-  - **مثال Armor Command (حوالي 1992-93، DOS):** المحاضر كان شغال عليها، وده كان **نظام dynamic audio من بدري جداً**، والموسيقى كانت بتتبلند كأنها DJ بيعمل beat matching.
-  - ★ **FMOD وأدوات زي دي** بتخلي الموسيقى ديناميكية، وده pipeline خاص لوحده.
-- **الـ footsteps مثال:** الصوت بيعتمد على الـ **material** اللي تحت اللاعب. ده بيحتاج design وربط بالـ gameplay.
-- **Voice over**، الـ compression (ضغط الملفات)، وإنها تتدمج بسلاسة.
-- **الـ audio engineers غالباً بيشتغلوا في "black box" منفصل**، والباقي بيشوفوا النتيجة بس ومش بيقدروا الشغل المعقد. المحاضر بيحذر من ده.
+- **لموسفولك:** ده أقوى تطبيق: **محتوى بعد الليفل 3000 / للي خلّصوا**: طبقة modifier فوق نفس الـ 3000 ليفل (مثلاً variant يغيّر القواعد/الأهداف/الميزانية بدل ليفلات جديدة). وده نفس فكرة الـ side quests والـ rival contests تعيد استخدام الليفلات بقواعد مختلفة. وكمان: **اللاعب اللي خلص الليفلات = أعلى قيمة**، فمحتاجين له سبب يفضل (ده وقت الـ replay mods). الإعلانات: مفيش في المصدر.
 
 ---
 
-## 17. الـ Integration والـ Tech Artist
+## 6. Terrain Artwork Pipeline (57m–70m) ★★
 
-- ★★ **المشكلة:** كل قسم بيعمل حاجة (animators، character artists، prop artists، ai programmers، engineers) ولازم كل حاجة تتجمع في الآخر.
-- **الحل:** في الفرق دي بيكون فيه **tech artist** أو "in-betweener"، شخص يفهم الـ art والـ tech مع بعض، لأن الـ artists مش دايماً technical، والـ engineers مش دايماً بيفهموا الـ art.
-- **مثال المشكلة:** النقل من Maya لـ Unreal عن طريق FBX وأي file format تاني، وبيحصل إن الـ textures تبوظ، والكل بيسأل مين هيصلحها. ده تحدي كبير.
-- ★ **Bugs بتحصل من الـ integration:** مثال: asset المفروض يكون 1 MB اتعمل بالغلط 1 GB، فالـ memory بتتملي والـ game يضرب. ومثال تاني: المحاضر نفسه كان بيشتغل على UE4 وعمل crash بسبب plugin اشتراه.
+- منطقة رمادية بين level designer وlevel artist؛ بتتغير حسب الفريق (designer first pass ثم artist). **الخطوة الأولى: الجدولة** (30 يوم ولا 3 ساعات؟).
+- **Exterior-heavy** (فيه interiors قليلة). engine مخصص. النحت (sculpt) للـ terrain.
 
----
+**Roads (حالة خاصة)** ★:
+- الطريق لازم يتبع الـ terrain، يلف حوالين الحاجات، ويربط regions.
+- لازم **يبان مميز** بس **لو حواف صلبة مثالية بيبان fake**.
+- الطرق الحقيقية: «**depressed**» شوية، وفيها **bridges** عند الـ dips بدل ما تنزل في gorge.
+- الطرق والأنهار والحاجات الطويلة الملتوية صعبة. Unity وUnreal دلوقتي أحسن + plugins.
+- **الـ AI** ممكن يحتاج يعرف إنها طريق (يسوق عليها).
+- بعدها: مكان البلد والمباني (white box أو مسطح مفضي)، textures خشنة للـ terrain.
 
-## 18. QA، Build Servers، والـ Validation
+**Cliffs/Modular tiles** ★★:
+- **المشكلة:** الـ terrain mesh مسطح بنشكّله زي الطين، وبنحط **texture واحد مُسقَط من فوق**. أي سطح رأسي يطلع فيه **texture بيتمطط/يتقطع** (مش عارف يتعامل مع الـ faces دي).
+- **الحل:** نماذج 3D لـ cliffs/rocks/boulders **نركبها على الأسطح الرأسية** فتبان صخور custom مش mesh متمطط. (شفتها في ألعاب كتير.)
 
-- الـ pipeline لازم يبقى فيه process كامل للـ QA والـ testing والـ usability focus testing.
-- **Build servers:** بتعمل automation لبعض الـ checks، وبتتأكد إن كل حاجة شغالة وإن مفيش حاجة كسرت اللعبة.
-- ★ **الـ validation مستمر:** كل ما تتدمج حاجة لازم تتأكد إنها مكسرتش حاجة تانية.
+**أدوات الـ terrain الحديثة (تغيرت جدًا بعد ما كتب الوثيقة):**
+- تعمل terrain واقعي وبتاخد **USGS / real-world data** وتعمل maps لأماكن حقيقية.
+- **Elevation-based texturing:** مستوى البحر = texture، وكل ما تعلى: desert → dense forest → chaparral → rocky → snowy mountain tops، وكمان على **slope angle**. الـ terrain «شبه ذكي» بيتقسم بالقواعد.
 
----
+**الإضاءة والوقت (الـ Time of Day)** ★:
+- شمس ديناميكية ولا أوقات ثابتة؟ **في الـ MMO أصعب**: ممكن 100 واحد أو مليون في الـ level.
+- في الـ single player بتتحكم وتعرف إنك راجع بعد مدة فتحط ليل.
+- عادةً **24-hour clock** متسارع جدًا (24 ساعة لعبة = حوالي 4 ساعات حقيقية: noon → midnight بعد ~ساعتين → noon بعد ساعتين كمان).
+- الوقت **بيأثر على الـ visuals والـ gameplay** (الـ NPCs اللي بتطلع بالليل).
 
-## 19. الـ Instances (النسخ والـ variants)
+**Weather/effects/animations:**
+- Weather، animations جزء من مبنى أو العالم (شلالات)، حاجات triggerable (انهيار صخري).
+- بعضها **one-offs بتأثر بشكل دائم** وبعضها لازم **reset**. القواعد بتختلف حسب MMO vs single player.
+- بعدها performance + approval.
 
-- **Instance = نسخة من الـ original.** ممكن تكون:
-  - **نسخة 100% مطابقة:** أي تغيير على الـ original بيتعكس على الـ instance تلقائياً.
-  - **نسخة بتغييرات:** مثلاً نفس الـ object بس لونه مختلف، أو مرفوع مثلاً، أو scaled. الـ instance ممكن **تتفك** عن الـ original في حاجات معينة (locked vs unlocked).
-  - مثال: لو الـ instance اتكبر بعد ما تتعمل ومش locked، هيفضل بيكبر لوحده، ولو locked مش هيتأثر.
-- ★ **الدرس:** تحديد أي خصائص (stats، scale، color) **locked** وأي خصائص **free** عشان مش يحصل تغيير غير مقصود.
+**Collision** ★★:
+- الـ collision للاعب أو الـ NPC غالبًا **مختلف** وما بيطابقش الـ geometry المرئي.
+- **Invisible walls** لمنع اللاعب من حتة. وبشكل **subtle**: لو في ثغرة صغيرة في جدار، اللاعب يقدر يدخلها شوية والـ **camera يتلخبط/يتعلق**، فنحط قطعة collision فتبان فجوة بس **ماينفعش يدخلها**.
+- بتتحط لحل bugs ولمنع السقوط من cliff، وبتتعدل **يدويًا** على الـ world map.
+- بعدها check شامل للـ zone (أول مستوى bug testing) + تذكير بالـ backup.
 
----
-
-## 20. الـ Bosses، الـ Mounts، والـ Consumables
-
-- **Bosses:** ممكن تكون custom بالكامل: الـ model، الـ AI، الـ animations، الـ environment، الـ attacks، الأسلحة. ★★ **المحاضر بيقول إنهم ممكن يعملوا النجاح أو الفشل للعبة**، وبيحتاجوا حذر كبير.
-- **Mounts (الركوب):** في اللعبة دي كانت خيول. كانت لازم تتربط بالـ character عشان الـ character يقدر يركب، والـ mount ممكن يكون customized. ولما اللاعب يركب، بيتكون **model جديد** ليه animations خاصة (ride animations) والحصان والـ player بيتحركوا مع بعض.
-- **Consumables (الاستهلاكيات):** بيتعملوا في crafting، ولهم pipeline مختلف في الإنشاء والاستخدام.
-
----
-
-## 21. الخلاصة التصميمية (مجمعة)
-
-- ★★★ **الـ pipeline الواضح يوفر وقت وفلوس** أكتر من الموهبة الفردية، خصوصاً في الفرق الكبيرة والمتعددة الجنسيات والـ outsource.
-- ★★★ **القيود مش عدو** (زي: 4 body types، 4 characters في الـ level، الـ ghost goggles، الـ polygon budget). كل قيد بيخلي الـ design أذكى.
-- ★★ **الـ performance budget** يتحسب من الأول: polygons، textures، memory، characters، animations، audio.
-- ★★ **الـ assets الصغيرة ممكن تكسر اللعبة** (الـ trash can في Die Hard).
-- ★★ **الـ naming والـ directories والـ source control** مش تفاصيل صغيرة.
-- ★★ **الـ dependencies لازم تتوثق** (skeleton بعد mesh، effect بعد object، audio بعد trigger).
-- ★★ **الـ quests لازم تتأكد إن اللاعب قادر يخلصها** حتى مع spawn محدود والـ MMO.
-- ★ **Rigging مهارة مستقلة** والـ animators لازم يتعلموها.
+- **لموسفولك:** مفيش terrain في Mossfolk، بس الباترن واحد: **حدود الـ jar** والـ collision يتعدلوا لحل مشاكل الـ gameplay مش بس شكليًا. ممكن يفيد في التحديات بعد 2501 (mossy shells/stones/rot): تتأكد إن الـ visual يطابق الـ collision/الـ physics الفعلي.
 
 ---
 
-**لموسفولك:**
-- **Naming conventions وmanifest للـ assets:** Mossfolk محتاجة قائمة واضحة للـ assets (اسم، directory، source control check-in، إشعار للتاسك اللي بعده). ده حاجة بسيطة بس بتوفر ساعات.
-- **Memory/performance budget لكل level:** الـ Unity physics والـ merge puzzle فيها عدد كبير من الـ creatures والـ jars، فلازم تحدد budget للـ rigidbodies، والـ particles، والـ audio، ومحدش يزود عدد الأحجام أو الـ creatures من غير ما يتحسب الأداء.
-- **Mossy shells/stones/rot challenges:** الـ challenges من 2501 لازم تتبنى على قيود واضحة (زي Die Hard)، ولازم قيود الـ materials والـ textures تتحدد من الأول، مش بعد ما تتعمل الـ levels.
-- **Tester-bot وbot_difficulty:** الـ bot ممكن يتعامل كـ "QA automation" زي الـ build servers، يتأكد إن كل ليفل ينفع يتحل ومفيش quest/challenge مستحيل الخلاص (زي مشكلة الذئاب)، وإن الـ resources (الـ shells والـ stones) تكفي.
-- **Side quests والـ rival contests:** لو الـ rival contest بيعتمد على spawns أو موارد محدودة، لازم نعمل نفس فحص الـ wolves: هل اللاعب يقدر يكمل حتى لو لاعبين تانيين؟ (في Mossfolk offline أغلب الوقت، بس لو فيه leaderboard أو contests مشتركة، فالفحص ده مهم).
-- **Miniجيمز:** الـ dependencies بين الـ mini-games والـ main loop (زي الـ audio والـ effects) لازم تتوثق عشان ماتتكسرش مع التحديثات.
-- **Checklist للـ 3000 level:** اعمل checklist بسيط لكل ليفل جديد (goal، budget، approvals، testing)، زي الـ flow chart، وده بيخلي فريقك (حتى لو صغير) يشتغل بنفس الطريقة.
+## 7. Objects Pipeline + LODs + قصتين الـ budgets (70m–81m) ★★★
+
+**Objects:**
+- في الـ MMO معظم الـ objects **upgradeable**: لازم تعرف **upgrade path**: نفس الـ base object يتغير؟ tint/لون؟ الاسم؟ ينطبق على character كمان. لازم تعرف القواعد.
+- Validate design → tasks → requirements (كام LOD…) → effects/audio محتاج؟
+
+**LODs** ★★:
+- الـ main object مثلاً **10,000 polygons** ثم **5000 → 2500 → … → 50**. لو الـ object على بعد ميل (silhouette) ممكن يكون كام polygon أو **texture بس**.
+- نفس الـ textures: **4K** قريب → **640×480** بعيد.
+- السبب: الـ engines مش سريعة كفاية (PS5 قللت الحاجة بس لسه موجودة **خصوصًا على mobile**).
+- **اتجنب «Popping»:** الانتقال بين الـ LODs يبقى سريع ودرامي فتشوف الـ object **pop pop pop** لو رجع ورا قدّام عند الحد. «أسوأ حاجة».
+- **للـ characters:** بعيد: الإيد ثابتة مش بتتحرك؛ متوسط: **4 صوابع كوحدة + الإبهام**؛ قريب: إيد كاملة؛ **facial animation بتشتغل لما تقرب جدًا** وتبقى textures وإنت بعيد.
+
+**الـ Designer side:**
+- الـ objects تتحط في الـ game مع **stats وتكاليف وأماكن التوفر**، في **database** عشان أي وقت تعدل الـ stats وتعيد البالانس بسهولة.
+- لو weapon: projectile effects، recoil، bullets، muzzle flash، laser، audio — ده تجهيز للـ engineering.
+
+**Concept art للـ object:**
+- rough sketch → validate → **detailed sketches**. الـ concept art عادةً من perspective angle فصعب تحدد الأحجام.
+- فبنعمل **side / top / back views من كاميرا مباشرة (straight-on)** عشان الكل يعرف الأحجام والتفاصيل بالظبط، والـ modeler يجيبها في الـ 3D package. (مش كل فريق بيعمل ده، بس بيوفر وقت وجهد.)
+- بعدها modeling diagrams، assets (models، textures، variants، LODs).
+- **فحص:** أسماء الـ assets ومواقع الملفات، polygon counts، texture sizes.
+
+**★★★ قصة الـ Trash Can (Die Hard FPS):**
+- الفريق كان عنده مشاكل performance لأسابيع ومافهموش ليه. هو سافر للـ developer وبعد **~30 ثانية** بص على نموذج **سلة زبالة**: «كام polygon؟» → **~10 مليون** (المفروض ~100). الـ artist junior ما عرفش إن فيه حدود. وضعوا **مئات** منها في الـ level → **مئات الملايين من الـ polygons** بدل «كام مليون» → **~100x over**. الـ asset صغير فماحدش فكر يفحصه.
+- **القاعدة:** حدد X عدد models وحدود poly counts وtexture sizes (ونفس الشيء للـ characters: تعقيد الـ skeleton وعدد الـ animations).
+
+**★★★ قصة الـ 122 Character:**
+- المخطط: **4 body types، 4 skeletal meshes، 4 sets of animations** (~100 animation للـ set = **400 total**).
+- هو سافر لأمريكا ورجع الصين: لقوا **122 model منفصل، 122 skeleton، كل واحد 100 animations** → ~**12,200** animations (قال «122,000… ولا 12,000») → حوالي **25x إلى 100x over memory**. **ضاع شهور** لأنهم ماعرفوش القيد أو نسيوه.
+- **الدرس:** من غير process مثبت «سهل تعمل غلط وتفوّت خطوة (ما حطيناش audio…)». **checklist** للـ producer/artist/designer: «أنا فين في الـ pipeline، إمتى شغلي، وأتتبعه في الجدول والـ dependencies.»
+
+- **لموسفولك:**
+  - **cap رسمي على variants**: 9 أحجام × عدد skins ثابت، ولو أي حد زوّد → إنذار.
+  - **ميزانية لـ effects الـ merge** (مش بس models): كل chain-merge فيه particles.
+  - **فحص تلقائي في الـ import/pipeline** (حدود textures/sprite sizes) — الفكرة بس؛ التنفيذ برمجة، متجاهل.
+  - الـ LOD مش مباشر على 2D، بس ينطبق إنه ماتدفعش detail في حاجة صغيرة على الشاشة (أصغر حجم مخلوق في الـ jar).
+
+---
+
+## 8. Characters, CAP, NPCs, Monsters (82m–93m) ★★★
+
+**Characters:**
+- الـ design: إيه بيعمل، يتفاعل مع إيه، abilities/skills/stories/الشكل. بعدها concept ثم art.
+- **عنده الـ armor والـ weapons shared/reusable بين كل الـ characters**، عكس **God of War → Kratos** (outfits/weapons خاصة بيه كـ signature). ينفع لـ generic content كثير + **assets unique قليلة** لـ key villain/hero/NPC. **90–95% من الـ art reused.**
+
+**CAP (create-a-player):**
+- تغيّر الوجه، سمين/نحيف، لون الجلد، الشعر، العيون، body type.
+- 60 levels، **armor set جديد كل 5 أو 10 levels**، «على الأقل 10 sets» لكل مستوى، وكل class له armor مختلف → **مئات/آلاف القطع** كلها لازم **تتركّب على نفس الـ characters**. فاحتاجوا قواعد وpipelines كثيرة، وإعادة استخدام skeleton/animation. **تتختبر بدري جدًا** لأن الـ CAP معقد وتحدي لناس كتير.
+
+**Variants (الباترن اللي بيوفر آلاف الأصول)** ★★★:
+- **Black armor و red armor** (fire armor / black knight's armor): **نفس الـ art** + **tint** + **shader change** + **effect change** (النار على الـ fire armor). لو الـ base model اتغير، **بيتكرر على كلهم** والباقي تغييرات بسيطة (اللون، الـ effect لسه شغال).
+- لازم تحدد: مين يلبس إيه، مربوط بـ classes؟ أسماء، stats مختلفة.
+- **Animation للـ equipment:** static (shield/helmet) vs دايناميك (helmet بريش بيتحرك في الريح) → إزاي هتتحرك؟ skin system ولا نظام تاني؟
+
+**NPCs:**
+- الـ players والـ NPCs بيستخدموا **نفس الأشياء**. بنعرّف الأدوار: vendor، enemy، trainer، named character في cutscene، generic («peasant one، peasant two»).
+- **★★ قاعدة الـ 80–90% reuse + 10–20% unique:** «لو كل حاجة 100% shared مش cool». الـ 10–20% دي «oh wow ماشفتش ده قبل كده»، ممكن تتستخدم بعدين أو تبقى **signature** تخلي الشخص ملفت في ساحة المعركة (characters، vehicles، weapons).
+- **Randomize ولا نفس الـ NPCs كل مرة وفي كل حتة** (consistency).
+
+**★★★ قواعد الـ Level/Armor:**
+- لو العدو level 20 vs 50: إزاي الـ stats؟ multiplier؟
+- **الارتباك بين مستوى الـ armor ومستوى الـ character:** level 10 لابس armor level 50 = مربك. والعكس: **level 50 لابس armor تبان للاعب كـ level 10** → اللاعب يفتكره سهل وبعدين **يموت** ويقول «إيه اللي حصل؟».
+- «**القواعد دي هي اللي بتنقذنا في إنتاج الألعاب**»، وكل واحد لازم يفهم الـ pipeline بتاع شغله: مين متورط، بيتسلّم من مين، إيه المطلوب منه (خصوصًا الجدد).
+- Final polish، testing، optimization. الـ characters من **أكثر الأشياء تعقيدًا** في أي لعبة (FPS أو MMO): AI + animation + effects + levels + stats + behaviors.
+
+**Monsters:**
+- NPCs بقواعد مختلفة: **non-humanoids**، ما بيشاركوش الـ armor لكن فيهم **categories/classes** قابلة لإعادة الاستخدام. AI وattacks وanimations خاصة. أبسط/**أقل تعقيدًا عمدًا عشان يبقى فيه منهم أكتر**.
+- **Skeletal types:** quadrupeds (حصان، كلب)، birds، snakes، spiders، fish. مش لازم كلهم أعداء (جزء من العالم الحي).
+- databases، stats، textures، color variants. **الـ flowcharts = checklists** للموظفين الجدد أو اللي في الخارج.
+
+- **لموسفولك:** ★★★ **الـ visual يطابق القوة الحقيقية**: التحديات من 2501 (mossy shells / stones / rot) لازم شكلها يقول صعوبتها بصدق؛ وإلا اللاعب يفتكر الليفل سهل ويفشل ويحس بظلم. قاعدة **90/10** للـ creature skins: variants (tint + shader + effect) على نفس الـ 9 أحجام لـ events/rival contests، مع 10–20% «signature» لحظات. ولو الـ base اتعدل يتعدل الكل (فكرة الـ variants؛ التنفيذ برمجة).
+
+---
+
+## 9. Quests (93m–98m) ★★★
+
+- **Pipeline:** concept الـ quests (paper design) → approvals → إزاي بتشتغل **عبر multiple zones** → detail: 2D maps، world terrain، quest stories، cutscenes، NPC designs (كل واحد ليه pipeline). ثم **production**: implement، verify، التأكد من الـ rewards، test، play.
+- **Quest concepting sub-chart = cheat sheet للـ designers:** who / what / where / when / how، وإزاي بتشتغل جوه الـ zones.
+- **Develop:** quest givers، stories، targets/goals، **unique art يظهر للـ quest بس** (chest بيظهر للاعب ده أو لمدة معينة)، mobs/groups، bosses، scripting AI behaviors، audio.
+
+**★★★ قصة «Kill 20 wolves»:**
+- لو اللاعب قتل 10 والذئاب ما بترجعش → الـ quest بيقول 20 وباقي 10 بس في العالم → **عمره ما يخلص**.
+- في الـ MMO **×3 تعقيد**: لاعب تاني ممكن يقتل الذئب.
+- أمثلة سيئة: **spawner يطلّع ذئب كل دقيقة** → طابور لاعبين مستنيين دورهم **لساعات** («كان تصميم فظيع»، بس ده اللي كتير من MMOs عملوه) → «**بيدوسوا على بعض**».
+- **الباترن:** لازم **تضمن إن اللاعب هيلاقي كل اللي محتاجه** لإنهاء الهدف.
+
+- **لموسفولك:** ★★★ **مولد الليفلات + الـ side quests:** أي هدف (مثلاً «ادمج X مرة» أو «وصل لحجم Y») لازم يكون **قابل للتحقق بميزانية الإسقاطات وتوزيع القطع** (البوت يثبت إن الهدف قابل للتحقيق بنسبة معقولة) — مفيش «ذئب مش بيرجع». وفي **rival contests** لو في موارد مشتركة، تأكد إنها ماتبقاش مصدر «طابور» أو تنافس على نفس المورد.
+
+---
+
+## 10. Rigging / Animation / Cutscenes / Audio (98m–107m) ★★
+
+**Rigging** ★:
+- **الـ rigger** يبني skeleton يناسب الـ mesh ويلوي صح. تخصص حساس؛ مش كل animator يعرف rig.
+- **نصيحته:** لو بتفكر تبقى animator **اتعلم rigging**. رأى animators ما بيعرفوش rig «وده بيضر شغلهم كثير»: بيعرفوا يخلوا الحركة طبيعية بس مايعرفوش الجانب التقني (character في T-pose، إدخال skeleton، constraints).
+- **Constraints/range of motion:** الدراع يقدر يوصل هنا بس ما يلف ورا بشكل غريب؛ الـ animator بيحرك ضمن الحدود. الـ rigger الشاطر بيعرف **range of motion البشري**. الـ masters «قليلين ومبهرين»، وبيزيد التعقيد مع الوجه والإيدين والقماش.
+- **Skinning:** ربط الـ skeleton بالـ mesh.
+- **Animation:** أحيانًا تألّفها، وأحيانًا لازم دقيقة: لعبة **TNA wrestling** كل animation كانت **motion captured** وواقعية (قفزات وهجمات). hand animation أو mocap أو مزيج.
+
+**Cutscenes:** pre-rendered أو in-game، قصيرة جوه quest أو طويلة بين regions. pipeline لزوايا الكاميرا واللقطات والتوقيت — «معقدة جدًا».
+
+**★★★ Audio:**
+- مش بس أصول — **مربوطة بالـ gameplay**: الـ chest لازم يعرف إمتى بيتفعّل. **Footsteps حسب الـ material**: عشب vs حجر vs معدن (clank) → لازم أعرف اللاعب ماشي على إيه.
+- الصوت بين «nice to have» و**حاسم للـ mood/ambiance** (horror).
+- **غلطة شائعة:** «هضيف الـ audio في الآخر زي الـ icing». اللعبة الممتازة بتفكر في الـ audio **من يوم 1**، حتى **dynamic audio** (FMOD) — موسيقى بتتغير حسب اللي بيحصل.
+- **مثال Armor Command (~1992–93، DOS، تاني لعبة اشتغل عليها):** كلما قربت من الأعداء الموسيقى تعلى في الـ intensity، وفي القتال تتغير تمامًا لحاجة مثيرة، وبعد ما القتال ينتهي ترجع ambient هادي. **«خلّت المعارك أكثر إثارة بكتير».** مش pre-scripted بالكامل: قطع موسيقى كثيرة بتمتزج بسلاسة، ومهندسو الصوت لازم يعرفوا الانتقالات **زي DJ بيعمل beat match**.
+- الـ audio pipeline: اتعمل، compressed صح، صوته كويس، بيمتزج. voice-over، SFX، background music.
+- مهندسو الصوت بيشتغلوا في «black box» والباقي بيقولوا «شغال، مش صعب»، وده تقليل من تعقيدهم.
+
+- **لموسفولك:** ★★ **Dynamic music في الـ jar:** الموسيقى تعلى كل ما الـ jar يقرب من خط الـ overflow وترجع هادية بعد merge كبير (Armor Command). **SFX الـ merge يتغير حسب الحجم والـ material** (mossy/stone/rot) زي الـ footsteps. والـ audio يتخطط من البداية مش في الآخر.
+
+---
+
+## 11. Integration / QA / Instances / Bosses / Mounts / Consumables (107m–114m) ★★
+
+**Integration:**
+- أقسام مختلفة بتنتج (animators، character artists، prop artists، AI programmers) ولازم يتجمعوا. أحيانًا فيه **tech artist** («jack-of-all-trades wizards») بيربط الـ artists غير التقنيين والـ engineers اللي مش فاهمين art.
+- المشاكل: Maya → Unreal عبر FBX والـ textures مش تمام: «مين هيصلح؟ مين هيساعدني أدمجه؟».
+
+**QA/Testing/Usability:** مش مفصل في الـ pipeline بس **لازم pipeline كامل ليه**. **Build servers** بتأتمت الـ validation: ماتكسرش حاجة. **مثال:** asset المفروض 1 MB طلع **1 GB** → الـ memory تنفجر واللعبة تـcrash عند التحميل. وقال إنه كراش Unreal 4 النهارده وهو بيجرب plugins اشتراها: «لسه شائع حتى في منتجات تجارية».
+
+**Instances** (من غير تفاصيل تنفيذ):
+- instance = نسخة من الأصل: **نسخة مطابقة تمامًا** (لو الأصل اتغير بتتغير) أو **variation مع override** (لو غيرت اللون/قلبت الحجم؛ لو الـ scale مش locked بيتغير بتغيير الأصل). بعض الخصائص **locked** وبعضها لأ.
+
+**Bosses:**
+- ممكن كل حاجة custom: الـ model، الـ AI، الـ animations، البيئة، الهجمات، الأسلحة. «صعبة ومتقنة جدًا» و**«ممكن تعمل أو تكسر لعبتك»** بسبب تعقيدها.
+
+**Mounts (الخيل/المركبات):** برية أو طايرة. القيد: الشخصية لازم **تتسلق وتركب**. ربط اللاعب بالـ mount، والـ mount قابل للتخصيص، و**animations مشتركة**: اللاعب + الـ mount معًا = **model تقني تاني** له set animations خاص (ride animations).
+
+**Consumables:** للـ crafting، pipeline مختلف شوية (بدأوا يعرّفوه).
+
+**الختام:** الـ link للوثيقة الأصلية في الـ chat. **ده بيشتغل للعبته وفريقه وحاجاته بس**، الفايدة إنك تفهم إزاي لعبة من نوع معين اتعملت وإزاي عرّفوا الـ process عشان **كل الفريق على نفس الصفحة وماينساش حاجة**.
+
+- **لموسفولك:**
+  - **Build validation:** نفس مشكلة الـ 1 MB → 1 GB تنطبق على أي asset أو config غلط في الـ pipeline؛ ومولد الليفلات يطلع ليفل «شغال» بس **غلط** (مثلاً توزيع/ميزانية مش متسقة) — فاحتاجين فحص تلقائي قبل ما يدخل الـ build.
+  - **ملاحظة:** لما نضيف مخلوق جديد، تخطيط الـ dependencies (art → animation → effect → audio) يتعمل مسبقًا.
+
+---
+
+## 12. الباترنز الجامعة للمصدر (للمراجعة السريعة) ★★★
+
+1. **الـ pipeline = checklist ضد النسيان** (naming، directory، check-in، إشعار الخطوة التالية).
+2. **Done = جوه اللعبة وقابل للعب.**
+3. **القيود من يوم 1** (standards، caps، memory map) **قبل** ما أي قسم يبني بحرية.
+4. **Reuse 80–95% + 5–20% signature** — والـ variants (tint + shader + effect) بتضاعف المحتوى.
+5. **طبقة فوق المحتوى الموجود** (ghost goggles، zombie) بدل محتوى جديد من الصفر.
+6. **Iteration:** 3–5 passes للـ focus test، والـ approval loop بيرجع للخلف لحد ما يتوافق.
+7. **الـ source files = أغلى حاجة**: backup ثلاثي + control منفصل للـ raw.
+8. **الـ visual لازم يطابق القوة الحقيقية** (armor level، mob level).
+9. **ضمان إن الهدف قابل للتحقيق** (20 wolves).
+10. **الـ audio والـ economy والـ performance من البداية** مش في الآخر.
+11. **التفاصيل أهم كل ما الفريق أكبر/موزع/outsourced.**
+
+**لموسفولك — أولويات التطبيق:** (1) definition-of-done + checklist للمحتوى، (2) physics/memory budget وcap على الـ variants، (3) طبقة replay فوق الـ 3000 ليفل للاعبين اللي خلّصوا، (4) التحقق إن كل هدف/quest قابل للتحقيق، (5) الـ visual language للتحديات من 2501 يطابق صعوبتها، (6) backup لمصادر الـ art الخام.
